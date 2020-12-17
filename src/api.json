@@ -10,11 +10,11 @@
     },
     "servers": [
         {
-            "url": "https://api.avanchange.com/v1/"
+            "url": "https://api.avanchange.com/v1"
         }
     ],
     "paths": {
-        "/get_order_status/": {
+        "/get_order_status": {
             "get": {
                 "summary": "Get order status by ID",
                 "description": "The Get Order endpoint returns a status of order by selected ID.",
