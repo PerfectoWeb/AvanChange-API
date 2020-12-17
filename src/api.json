@@ -9,19 +9,6 @@
 		"version": "1.0"
 	  },
 	  "components": {
-		"requestBodies": {
-		  "NewItem": {
-			"description": "A JSON object containing item data",
-			"required": true,
-			"content": {
-			  "application/json": {
-				"schema": {
-				  "type": "object"
-				}
-			  }
-			}
-		  }
-		},
 		"headers": {
 		  "X-RateLimit-Limit": {
 			"description": "Request limit per hour",

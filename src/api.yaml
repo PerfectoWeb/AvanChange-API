@@ -55,12 +55,34 @@ info:
 
 components:
 
+  #########################
+  # Common headers
+  # (except request headers - they are defined as parameters)
+  #########################
+  headers:
+	X-RateLimit-Limit:
+	  description: Request limit per hour
+	  schema:
+		type: integer
+	  example: 100
+	X-RateLimit-Remaining:
+	  description: Remaining requests for the hour
+	  schema:
+		type: integer
+	  example: 100
 
-#
+
+#########################
+# Servers
+#########################
 servers:
   - url: 'https://api.avanchange.com/v1'
   - url: 'https://avanchange.com/api/v1'
   
+  
+#########################
+# Paths
+#########################
 paths:
   /exchange/get_currencies:
 	summary: Exchange
