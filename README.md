@@ -1,6 +1,4 @@
-<p align="center">
-  <a href="https://avanchange.com" target="_blank"><img src="https://raw.githubusercontent.com/PerfectoWeb/AvanChange-API/main/logo.png" alt="AvanChange API" width="300"></a>
-</p>
+<a href="https://avanchange.com" target="_blank"><img src="https://raw.githubusercontent.com/PerfectoWeb/AvanChange-API/main/logo.png" alt="AvanChange API" width="300"></a>
 
 AvanChange API is a convenient and fast API for performing exchange operations from your 
 website or application via the service <a href="https://avanchange.com/">avanchange.com</a>.
