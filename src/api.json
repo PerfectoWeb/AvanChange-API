@@ -1,94 +1,95 @@
 {
-	  "openapi": "3.0.3",
-	  "info": {
-		"title": "AvanChange API Documentation",
-		"x-logo": {
-		  "url": "avanchange.com/uploads/images/logo-api.png"
-		},
-		"description": "This page contains the documentation on how to use [AvanChange](https://avanchange.com) through API calls.\n\n> Note: To get Your API Key and Secret, you need to register on the [avanchange.com](https://avanchange.com), go to your **Personal Account** and activate your API in the **API** section.### Request Content-Type\n\nThe Content-Type for POST and PUT requests can be set to `application/x-www-form-urlencoded`,\n`multipart/form-data`, or `application/json`.\n\n### Endpoint Names and Response Content-Type\n\nUse Accept: `application/json header` to the request to get the JSON response. Most API endpoints provide the same content as their HTML counterparts. Sending requests with the Accept header is necessary.### Authentication\n\nSome endpoints do not require any authentication, pretty much anything else will require you to be authenticated.\n\nTo become authenticated you will need to create an API Key from the admin panel.\n\nOnce you have your API Key you can pass it in along with your API Username as an HTTP header like this:\n\n```\ncurl -X GET \"https:/api.avanchange.com/v1/endpoint/\" \\\n-H \"API-Key: b94a80ec048f\" \\\n-H \"API-Secret: Y3oZu4Cz1Mei2DjV\"\n```\n\n",
-		"version": "latest"
-	  },
-	  "servers": [
-		{
-		  "url": "https://api.avanchange.com/v1/"
-		}
-	  ],
-	  "paths": {
-		"/get_order_status/": {
-		  "get": {
-			"summary": "Get order status by ID",
-			"description": "The Get Order endpoint returns a status of order by selected ID.",
-			"parameters": [],
-			"tags": [
-			  "Orders"
-			],
-			"responses": {
-			  "200": {
-				"description": "A category_list object that contains an array of categories",
-				"content": {
-				  "application/json": {
-					"schema": {
-					  "type": "object",
-					  "properties": {
-						"category_list": {
-						  "type": "object",
-						  "properties": {
-							"can_create_category": {
-							  "type": "boolean"
-							},
-							"can_create_topic": {
-							  "type": "boolean"
-							},
-							"draft": {
-							  "type": "boolean"
-							},
-							"categories": {
-							  "type": "array",
-							  "items": {
-								"type": "object",
-								"properties": {
-								  "id": {
-									"type": "integer"
-								  },
-								  "name": {
-									"type": "string"
-								  },
-								  "color": {
-									"type": "string"
-								  },
-								  "topic_count": {
-									"type": "integer"
-								  },
-								  "post_count": {
-									"type": "integer"
-								  },
-								  "position": {
-									"type": "integer"
-								  },
-								  "permission": {
-									"type": "integer"
-								  },
-								  "has_children": {
-									"type": "boolean"
-								  },
-								  "description_excerpt": {
-									"type": "string"
-								  }
-								}
-							  }
-							}
-						  }
-						}
-					  }
-					}
-				  }
-				}
-			  }
-			}
-		  },
-		  }
-		},
-		
-	  }
-	}
-	
+    "openapi": "3.0.3",
+    "info": {
+        "title": "AvanChange API Documentation",
+        "x-logo": {
+            "url": "avanchange.com/uploads/images/logo-api.png"
+        },
+        "description": "This page contains the documentation on how to use [AvanChange](https://avanchange.com) through API calls.\n\n> Note: To get Your API Key and Secret, you need to register on the [avanchange.com](https://avanchange.com), go to your **Personal Account** and activate your API in the **API** section.### Request Content-Type\n\nThe Content-Type for POST and PUT requests can be set to `application/x-www-form-urlencoded`,\n`multipart/form-data`, or `application/json`.\n\n### Endpoint Names and Response Content-Type\n\nUse Accept: `application/json header` to the request to get the JSON response. Most API endpoints provide the same content as their HTML counterparts. Sending requests with the Accept header is necessary.### Authentication\n\nSome endpoints do not require any authentication, pretty much anything else will require you to be authenticated.\n\nTo become authenticated you will need to create an API Key from the admin panel.\n\nOnce you have your API Key you can pass it in along with your API Username as an HTTP header like this:\n\n```\ncurl -X GET \"https:/api.avanchange.com/v1/endpoint/\" \\\n-H \"API-Key: b94a80ec048f\" \\\n-H \"API-Secret: Y3oZu4Cz1Mei2DjV\"\n```\n\n",
+        "version": "latest"
+    },
+    "servers": [
+        {
+            "url": "https://api.avanchange.com/v1/"
+        }
+    ],
+    "paths": {
+        "/get_order_status/": {
+            "get": {
+                "summary": "Get order status by ID",
+                "description": "The Get Order endpoint returns a status of order by selected ID.",
+                "parameters": [
+                    
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A category_list object that contains an array of categories",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "category_list": {
+                                            "type": "object",
+                                            "properties": {
+                                                "can_create_category": {
+                                                    "type": "boolean"
+                                                },
+                                                "can_create_topic": {
+                                                    "type": "boolean"
+                                                },
+                                                "draft": {
+                                                    "type": "boolean"
+                                                },
+                                                "categories": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "color": {
+                                                                "type": "string"
+                                                            },
+                                                            "topic_count": {
+                                                                "type": "integer"
+                                                            },
+                                                            "post_count": {
+                                                                "type": "integer"
+                                                            },
+                                                            "position": {
+                                                                "type": "integer"
+                                                            },
+                                                            "permission": {
+                                                                "type": "integer"
+                                                            },
+                                                            "has_children": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "description_excerpt": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+    }
+    
+}
