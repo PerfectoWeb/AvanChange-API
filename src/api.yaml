@@ -1,41 +1,39 @@
-# OpenAPI version identifier - required for OpenAPI 3.0 domains
 openapi: 3.0.3
-
-#######################
-# info section
-#######################
 info:
   title: AvanChange API
   x-logo:
 	url: avanchange.com/uploads/images/logo-api.png
-  description: >-
-	This page contains the documentation on how to use
-	[AvanChange](https://avanchange.com) through API calls.
+  description: >
 
-	> Note: You need to register on the
-	[avanchange.com](https://avanchange.com), next go to the **My Account**
-	&raquo; **API** section to get your API Key & Secret.
+	## Introduction
 
-	## Endpoint Names and Response Content-Type
+	Welcome to [AvanChange](https://avanchange.com) Exchange API and developer
+	documentation. This page contains the documentation on how to use AvanChange
+	through API calls. To get started, create or login into your existing
+	[avanchange.com](https://avanchange.com) account. Go to the **My Account**
+	&raquo; **API** section to get your **API Key** & **Secret.** 
 
-	The Content-Type for `POST` requests can be set to `application/json` to the
-	request to get the JSON response. Most API endpoints provide the same
+	## Endpoints and Responses
+
+	The Content-Type for `POST`, `PUT` requests can be set to `application/json`
+	to the request to get the JSON response. Most API endpoints provide the same
 	content as their HTML counterparts. Sending requests with the Accept header
 	is necessary.
 
 	## Authentication
 
 	Some endpoints do not require any authentication, pretty much anything else
-	will require you to be authenticated. To become authenticated you will need to create an API Key from the admin panel. Once you have your API Key you can pass it in along with your API Secret as
-	an HTTP header like this:
+	will require you to be authenticated. To become authenticated you will need
+	to create an `X-API-Token` using your API Key and API Secret.
+
+
+	Once you have your API Token you can pass it as an HTTP header like this:
 
 	```
 
 	curl -X GET "https://api.avanchange.com/v1/endpoint/" \
 
-	-H "API-Key: b94a80ec048f" \
-
-	-H "API-Secret: Y3oZu4Cz1Mei2DjV"
+	-H "X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA=="
 
 	```
 
@@ -46,19 +44,39 @@ info:
 	curl -X POST "https://api.avanchange.com/v1/endpoint/" \
 
 	-H "Content-Type: application/json;" \
-	
-	-H "API-Key: b94a80ec048f" \
 
-	-H "API-Secret: Y3oZu4Cz1Mei2DjV"
+	-H "X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA=="
+
+	```
+
+	## Create API Token
+
+	To create your API Token you must encode your API Key with API Secret using
+	<a href="https://en.wikipedia.org/wiki/Padding_(cryptography)"
+	target="_blank">**AES-128-ECB-PKCS5Padding**</a> and encrypting result in
+	Base64 encoding.
+
+
+	Below code used to calculate value for API Token. Also, you can <a href="#" target="_blank">download as file</a>.
+	
+	```
+	
+	// Stable version [PHP 5 >= 5.3.0, PHP 7, PHP 8]
+
+	function encrypt_apikey($api_key, $api_secret) {
+	  $alg = 'AES-128-ECB';
+	  $ivsize = openssl_cipher_iv_length($alg);
+	  $iv = openssl_random_pseudo_bytes($ivsize);
+	  $encrypted = openssl_encrypt($api_key, $alg, $api_secret, OPENSSL_RAW_DATA, $iv);
+	  $encrypted = base64_encode($encrypted);
+	  return $encrypted;
+	}
+	
+	```
+	
 	
   version: '1.0'
-
 components:
-
-  #########################
-  # Common headers
-  # (except request headers - they are defined as parameters)
-  #########################
   headers:
 	X-RateLimit-Limit:
 	  description: Request limit per hour
@@ -70,27 +88,22 @@ components:
 	  schema:
 		type: integer
 	  example: 100
-
-
-#########################
-# Servers
-#########################
+  securitySchemes:
+	APITokenAuth:
+	  type: apiKey
+	  in: header
+	  name: X-API-TOKEN
 servers:
   - url: 'https://api.avanchange.com/v1'
   - url: 'https://avanchange.com/api/v1'
-  
-  
-#########################
-# Paths
-#########################
 paths:
-  /exchange/get_currencies:
-	summary: Exchange
+  /exchange/currencies/:
+	summary: Currencies
 	description: Get all payment methods codes with human friendly names
 	get:
 	  summary: Currency codes
 	  description: Get all available currency codes with human friendly names
-	  operationId: '1'
+	  operationId: exchange-currencies
 	  responses:
 		'200':
 		  description: Success
@@ -109,13 +122,13 @@ paths:
 					}
 	  tags:
 		- Exchange
-  /exchange/get_rates:
-	summary: Exchange
+  /exchange/rates/:
+	summary: Rates
 	description: Actions with exchange rates and etc
 	get:
 	  summary: Rates
 	  description: Get all exchange directions rates
-	  operationId: '2'
+	  operationId: exchange-rates
 	  responses:
 		'200':
 		  description: Success
@@ -146,22 +159,24 @@ paths:
 					}
 	  tags:
 		- Exchange
-  /exchange/get_rate/{symbol}:
-	summary: Single direction rate
+  '/exchange/rate/{symbol}/':
+	summary: Rate
 	description: Get rate for selected direction
 	get:
-	  summary: 'Single Rate'
+	  summary: Single Rate
 	  description: Get rate for selected direction
-	  operationId: '3'
+	  operationId: exchange-rate
 	  parameters:
 		- name: symbol
 		  in: path
 		  required: true
-		  example: BTC-QWRUB
-		  description: Exchange direction with currency codes, separated by a dash. <a href="#">List of currencies codes</a>
+		  example: BTC-ETH
+		  description: >-
+			Exchange direction with currency codes, separated by a dash. <a
+			href="#">List of currencies codes</a>
 		  schema:
 			type: string
-			pattern: ^[A-Z]{3,8}-[A-Z]{3,8}$
+			pattern: '^[A-Z]{3,8}-[A-Z]{3,8}$'
 			minLength: 7
 	  responses:
 		'200':
@@ -169,17 +184,76 @@ paths:
 		  content:
 			application/json:
 			  examples:
-				Short example:
+				BTC to ETH rate:
 				  value: |-
 					{
 					  "from": "BTC",
 					  "from_title": "Bitcoin",
-					  "to": "QWRUB",
-					  "to_title": "QIWI (RUB)",
-					  "rate": "1709159.47",
-					  "reserve": "500000",
-					  "min": "5000",
-					  "max": "45000"
+					  "to": "ETH",
+					  "to_title": "Ethereum",
+					  "rate": "35.38",
+					  "reserve": "5000",
+					  "min": "0.001",
+					  "max": "3"
 					}
 	  tags:
 		- Exchange
+  /account/info/:
+	summary: Account info
+	description: Get account info
+	get:
+	  security:
+		- APITokenAuth: []
+	  summary: Get account info
+	  description: Retrieve a short data of personal account.
+	  operationId: account-info
+	  responses:
+		'200':
+		  description: Success
+		  content:
+			application/json:
+			  examples:
+				John Doe:
+				  value: |-
+					{
+					  "login": "john.doe",
+					  "email": "john.doe@gmail.com",
+					  "points": 3570,
+					  "level": 5,
+					  "registered": 1552124074,
+					  "last_visit": 1558205323,
+					  "api_status": 1,
+					  "account_status": 1
+					}
+	  tags:
+		- Account
+  /account/balance/:
+	summary: Account balance
+	description: Get account balances
+	get:
+	  security:
+		- APITokenAuth: []
+	  summary: Get account balance
+	  description: Retrieve personal account balances
+	  operationId: account-balance
+	  responses:
+		'200':
+		  description: Success
+		  content:
+			application/json:
+			  examples:
+				Balances:
+				  value: |-
+					{
+					  "balance_acbtc": 0.285600,
+					  "balance_acbtc_max": 2.000000
+					}
+	  tags:
+		- Account
+tags:
+  - name: Account
+	description: actions with personal account
+  - name: Exchange
+	description: actions with rates
+  - name: Orders
+	description: actions with orders
