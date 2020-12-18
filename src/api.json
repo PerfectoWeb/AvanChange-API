@@ -1,12 +1,19 @@
 {
 	  "openapi": "3.0.3",
 	  "info": {
+		"version": "1.0",
 		"title": "AvanChange API",
-		"x-logo": {
-		  "url": "avanchange.com/uploads/images/logo-api.png"
+		"termsOfService": "https://avanchange.com/en/pages/terms.html",
+		"contact": {
+		  "name": "API Support",
+		  "email": "api@avanchange.com",
+		  "url": "https://avanchange.com/en/support/"
 		},
-		"description": "\n## Introduction\nWelcome to [AvanChange](https://avanchange.com) Exchange API and developer documentation. This page contains the documentation on how to use AvanChange through API calls. To get started, create or login into your existing [avanchange.com](https://avanchange.com) account. Go to the **My Account** &raquo; **API** section to get your **API Key** & **Secret.** \n## Endpoints and Responses\nThe Content-Type for `POST`, `PUT` requests can be set to `application/json` to the request to get the JSON response. Most API endpoints provide the same content as their HTML counterparts. Sending requests with the Accept header is necessary.\n## Authentication\nSome endpoints do not require any authentication, pretty much anything else will require you to be authenticated. To become authenticated you will need to create an `X-API-Token` using your API Key and API Secret.\n\nOnce you have your API Token you can pass it as an HTTP header like this:\n```\ncurl -X GET \"https://api.avanchange.com/v1/endpoint/\" \\\n-H \"X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA==\"\n```\nand this is how POST requests will look:\n```\ncurl -X POST \"https://api.avanchange.com/v1/endpoint/\" \\\n-H \"Content-Type: application/json;\" \\\n-H \"X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA==\"\n```\n## Create API Token\nTo create your API Token you must encode your API Key with API Secret using <a href=\"https://en.wikipedia.org/wiki/Padding_(cryptography)\" target=\"_blank\">**AES-128-ECB-PKCS5Padding**</a> and encrypting result in Base64 encoding.\n\nBelow code used to calculate value for API Token. Also, you can <a href=\"#\" target=\"_blank\">download as file</a>.\n```\n// Stable version [PHP 5 >= 5.3.0, PHP 7, PHP 8]\nfunction encrypt_apikey($api_key, $api_secret) {\n  $alg = 'AES-128-ECB';\n  $ivsize = openssl_cipher_iv_length($alg);\n  $iv = openssl_random_pseudo_bytes($ivsize);\n  $encrypted = openssl_encrypt($api_key, $alg, $api_secret, OPENSSL_RAW_DATA, $iv);\n  $encrypted = base64_encode($encrypted);\n  return $encrypted;\n}\n```\n",
-		"version": "1.0"
+		"x-logo": {
+		  "url": "https://avanchange.com/uploads/images/logo-api.png",
+		  "altText": "AvanChange API"
+		},
+		"description": "\n## Introduction\nWelcome to [AvanChange](https://avanchange.com) Exchange API and developer documentation. This page contains the documentation on how to use AvanChange through API calls. To get started, create or login into your existing [avanchange.com](https://avanchange.com) account. Go to the **My Account** &raquo; **API** section to get your **API Key** & **Secret.** \n## Endpoints and Responses\nThe Content-Type for `POST`, `PUT` requests can be set to `application/json` to the request to get the JSON response. Most API endpoints provide the same content as their HTML counterparts. Sending requests with the Accept header is necessary.\n## Authentication\nSome endpoints do not require any authentication, pretty much anything else will require you to be authenticated. To become authenticated you will need to create an `X-API-TOKEN` using your API Key and API Secret.\n\nOnce you have your API Token you can pass it as an HTTP header like this:\n```\ncurl -X GET \"https://api.avanchange.com/v1/endpoint/\" \\\n-H \"X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA==\"\n```\nand this is how POST requests will look:\n```\ncurl -X POST \"https://api.avanchange.com/v1/endpoint/\" \\\n-H \"Content-Type: application/json;\" \\\n-H \"X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA==\"\n```\n## Create API Token\nTo create your API Token you must encode your API Key with API Secret using <a href=\"https://en.wikipedia.org/wiki/Padding_(cryptography)\" target=\"_blank\">**AES-128-ECB-PKCS5Padding**</a> and encrypting result in Base64 encoding.\n\nBelow code used to calculate value for API Token. Also, you can <a href=\"https://github.com/PerfectoWeb/AvanChange-API/tree/main/php/lib\" target=\"_blank\">download as file</a>.\n```\n// PHP 5 >= 5.3.0, PHP 7, PHP 8\nfunction encrypt_apikey($api_key, $api_secret) {\n  $alg = 'AES-128-ECB';\n  $ivsize = openssl_cipher_iv_length($alg);\n  $iv = openssl_random_pseudo_bytes($ivsize);\n  $encrypted = openssl_encrypt($api_key, $alg, $api_secret, OPENSSL_RAW_DATA, $iv);\n  $encrypted = base64_encode($encrypted);\n  return $encrypted;\n}\n```\n"
 	  },
 	  "components": {
 		"headers": {
@@ -31,6 +38,217 @@
 			"in": "header",
 			"name": "X-API-TOKEN"
 		  }
+		},
+		"schemas": {
+		  "user": {
+			"type": "object",
+			"properties": {
+			  "login": {
+				"description": "User supplied username",
+				"type": "string",
+				"minLength": 3,
+				"example": "John78",
+				"pattern": "/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/"
+			  },
+			  "email": {
+				"description": "User email address",
+				"type": "string",
+				"format": "email",
+				"minLength": 7,
+				"example": "john.doe@example.com"
+			  },
+			  "points": {
+				"description": "Referral Programm points",
+				"type": "integer",
+				"minLength": 1,
+				"example": 3570
+			  },
+			  "level": {
+				"description": "Referral Programm level",
+				"type": "integer",
+				"minLength": 1,
+				"example": 3
+			  },
+			  "registered": {
+				"description": "User registration epoch time",
+				"type": "integer",
+				"minLength": 10,
+				"example": 1552124074
+			  },
+			  "last_visit": {
+				"description": "User last visit epoch time",
+				"type": "integer",
+				"minLength": 10,
+				"example": 1558205323
+			  },
+			  "api_status": {
+				"description": "User API status\n  * `0` - Disabled\n  * `1` - Enabled\n",
+				"type": "integer",
+				"example": 1,
+				"enum": [
+				  0,
+				  1
+				]
+			  },
+			  "status": {
+				"description": "User account statu\n  * `0` - Inactive\n  * `1` - Active\n  * `2` - Blocked\n",
+				"type": "integer",
+				"enum": [
+				  0,
+				  1,
+				  2
+				],
+				"example": 1
+			  }
+			}
+		  },
+		  "balance": {
+			"type": "object",
+			"properties": {
+			  "acbtc": {
+				"description": "User Balance in BTC",
+				"type": "number",
+				"multipleOf": 0.000001,
+				"minLength": 1,
+				"example": 0.285601
+			  },
+			  "aceth": {
+				"description": "User Balance in ETH",
+				"type": "number",
+				"multipleOf": 0.000001,
+				"minLength": 1,
+				"example": 0.285601
+			  },
+			  "acbtc_max": {
+				"description": "The max allowed deposit on BTC balance",
+				"type": "number",
+				"multipleOf": 0.000001,
+				"minLength": 1,
+				"example": 2
+			  },
+			  "aceth_max": {
+				"description": "The max allowed deposit on ETH balance",
+				"type": "number",
+				"multipleOf": 0.000001,
+				"minLength": 1,
+				"example": 50
+			  }
+			}
+		  },
+		  "currencies": {
+			"type": "object",
+			"properties": {
+			  "BTC": {
+				"description": "Human friendly name for BTC",
+				"type": "string",
+				"minLength": 3,
+				"example": "Bitcoin"
+			  },
+			  "ETH": {
+				"description": "Human friendly name for ETH",
+				"type": "string",
+				"minLength": 3,
+				"example": "Ethereum"
+			  },
+			  "XMR": {
+				"description": "Human friendly name for XMR",
+				"type": "string",
+				"minLength": 3,
+				"example": "Monero (XMR)"
+			  },
+			  "TUSD": {
+				"description": "Human friendly name for TUSD",
+				"type": "string",
+				"minLength": 3,
+				"example": "TrueUSD (TUSD)"
+			  },
+			  "QWRUB": {
+				"description": "Human friendly name for QWRUB",
+				"type": "string",
+				"minLength": 3,
+				"example": "Qiwi (RUB)"
+			  },
+			  "...": {
+				"description": "Human friendly name for other currencies",
+				"type": "string",
+				"minLength": 3,
+				"example": "..."
+			  }
+			}
+		  },
+		  "rate": {
+			"type": "object",
+			"properties": {
+			  "from": {
+				"description": "«From» currency code. All currency codes you find here.",
+				"type": "string",
+				"minLength": 3,
+				"example": "BTC"
+			  },
+			  "from_name": {
+				"description": "Human friendly name of «From» direction",
+				"type": "string",
+				"minLength": 3,
+				"example": "Bitcoin"
+			  },
+			  "to": {
+				"description": "«To» currency code. All currency codes you can get through [/exchange/currencies/](#/Exchange/exchange-currencies/) method.",
+				"type": "string",
+				"minLength": 3,
+				"example": "ETH"
+			  },
+			  "to_name": {
+				"description": "Human friendly name of «To» direction",
+				"type": "string",
+				"minLength": 3,
+				"example": "Ethereum"
+			  },
+			  "rate": {
+				"description": "Exchange rate without discounts. If you want get rate with all personal discounts please use `X-API-TOKEN` header in your query.",
+				"type": "number",
+				"minLength": 3,
+				"multipleOf": 0.000001,
+				"example": 1709159.47
+			  },
+			  "reserve": {
+				"description": "Reserves of «To» currency",
+				"type": "number",
+				"minLength": 3,
+				"multipleOf": 0.000001,
+				"example": 500000
+			  },
+			  "min": {
+				"description": "Min amount in give currency",
+				"type": "number",
+				"minLength": 3,
+				"multipleOf": 0.000001,
+				"example": 5000
+			  },
+			  "max": {
+				"description": "Max amount in give currency",
+				"type": "number",
+				"minLength": 3,
+				"multipleOf": 0.000001,
+				"example": 45000
+			  }
+			}
+		  },
+		  "rates": {
+			"type": "object",
+			"properties": {
+			  "1": {
+				"$ref": "#/components/schemas/rate"
+			  },
+			  "2": {
+				"$ref": "#/components/schemas/rate"
+			  },
+			  "n": {
+				"description": "Same other exchange rates",
+				"type": "object",
+				"example": "..."
+			  }
+			}
+		  }
 		}
 	  },
 	  "servers": [
@@ -54,10 +272,8 @@
 				"description": "Success",
 				"content": {
 				  "application/json": {
-					"examples": {
-					  "List of codes": {
-						"value": "{\n  \"BTC\": \"Bitcoin\",\n  \"ETH\": \"Ethereum\",\n  \"XMR\": \"Monero (XMR)\",\n  \"TUSD\": \"TrueUSD (TUSD)\",\n  \"QWRUB\": \"Qiwi (RUB)\",\n  \"others\": \"...\",\n}"
-					  }
+					"schema": {
+					  "$ref": "#/components/schemas/currencies"
 					}
 				  }
 				}
@@ -80,10 +296,8 @@
 				"description": "Success",
 				"content": {
 				  "application/json": {
-					"examples": {
-					  "Short example": {
-						"value": "{\n  \"from\": \"BTC\",\n  \"from_title\": \"Bitcoin\",\n  \"to\": \"QWRUB\",\n  \"to_title\": \"QIWI (RUB)\",\n  \"rate\": \"1709159.47\",\n  \"reserve\": \"500000\",\n  \"min\": \"5000\",\n  \"max\": \"45000\"\n},\n{\n  \"from\": \"BTC\",\n  \"from_title\": \"Bitcoin\",\n  \"to\": \"YMRUB\",\n  \"to_title\": \"Яндекс Деньги\",\n  \"rate\": \"1712010.37\",\n  \"reserve\": \"500000\",\n  \"min\": \"1000\",\n  \"max\": \"45000\"\n}"
-					  }
+					"schema": {
+					  "$ref": "#/components/schemas/rates"
 					}
 				  }
 				}
@@ -120,10 +334,8 @@
 				"description": "Success",
 				"content": {
 				  "application/json": {
-					"examples": {
-					  "BTC to ETH rate": {
-						"value": "{\n  \"from\": \"BTC\",\n  \"from_title\": \"Bitcoin\",\n  \"to\": \"ETH\",\n  \"to_title\": \"Ethereum\",\n  \"rate\": \"35.38\",\n  \"reserve\": \"5000\",\n  \"min\": \"0.001\",\n  \"max\": \"3\"\n}"
-					  }
+					"schema": {
+					  "$ref": "#/components/schemas/rate"
 					}
 				  }
 				}
@@ -151,10 +363,8 @@
 				"description": "Success",
 				"content": {
 				  "application/json": {
-					"examples": {
-					  "John Doe": {
-						"value": "{\n  \"login\": \"john.doe\",\n  \"email\": \"john.doe@gmail.com\",\n  \"points\": 3570,\n  \"level\": 5,\n  \"registered\": 1552124074,\n  \"last_visit\": 1558205323,\n  \"api_status\": 1,\n  \"account_status\": 1\n}"
-					  }
+					"schema": {
+					  "$ref": "#/components/schemas/user"
 					}
 				  }
 				}
@@ -182,10 +392,8 @@
 				"description": "Success",
 				"content": {
 				  "application/json": {
-					"examples": {
-					  "Balances": {
-						"value": "{\n  \"balance_acbtc\": 0.285600,\n  \"balance_acbtc_max\": 2.000000\n}"
-					  }
+					"schema": {
+					  "$ref": "#/components/schemas/balance"
 					}
 				  }
 				}
@@ -200,15 +408,15 @@
 	  "tags": [
 		{
 		  "name": "Account",
-		  "description": "actions with personal account"
+		  "description": "Operations with personal account. Get user info, balance and others."
 		},
 		{
 		  "name": "Exchange",
-		  "description": "actions with rates"
+		  "description": "Operations with rates and sugessions. Get currencies, rates or single rate."
 		},
 		{
 		  "name": "Orders",
-		  "description": "actions with orders"
+		  "description": "Operations with orders. Create, confirm, cancel and check orders."
 		}
 	  ]
 	}
