@@ -10,7 +10,7 @@
 		  "url": "https://avanchange.com/en/support/"
 		},
 		"x-logo": {
-		  "url": "https://avanchange.com/uploads/images/logo-api.png",
+		  "url": "https://avanchange.com/uploads/images/logo-api-v1.png",
 		  "altText": "AvanChange API"
 		},
 		"description": "\n## Introduction\nWelcome to [AvanChange](https://avanchange.com) Exchange API and developer documentation. This page contains the documentation on how to use AvanChange through API calls. To get started, create or login into your existing [avanchange.com](https://avanchange.com) account. Go to the **My Account** &raquo; **API** section to get your **API Key** & **Secret.** \n## Endpoints and Responses\nThe Content-Type for `POST`, `PUT` requests can be set to `application/json` to the request to get the JSON response. Most API endpoints provide the same content as their HTML counterparts. Sending requests with the Accept header is necessary.\n## Authentication\nSome endpoints do not require any authentication, pretty much anything else will require you to be authenticated. To become authenticated you will need to create an `X-API-TOKEN` using your API Key and API Secret.\n\nOnce you have your API Token you can pass it as an HTTP header like this:\n```\ncurl -X GET \"https://api.avanchange.com/v1/endpoint/\" \\\n-H \"X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA==\"\n```\nand this is how POST requests will look:\n```\ncurl -X POST \"https://api.avanchange.com/v1/endpoint/\" \\\n-H \"Content-Type: application/json;\" \\\n-H \"X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA==\"\n```\n## Create API Token\nTo create your API Token you must encode your API Key with API Secret using <a href=\"https://en.wikipedia.org/wiki/Padding_(cryptography)\" target=\"_blank\">**AES-128-ECB-PKCS5Padding**</a> and encrypting result in Base64 encoding.\n\nBelow code used to calculate value for API Token. Also, you can <a href=\"https://github.com/PerfectoWeb/AvanChange-API/tree/main/php/lib\" target=\"_blank\">download as file</a>.\n```\n// PHP 5 >= 5.3.0, PHP 7, PHP 8\nfunction encrypt_apikey($api_key, $api_secret) {\n  $alg = 'AES-128-ECB';\n  $ivsize = openssl_cipher_iv_length($alg);\n  $iv = openssl_random_pseudo_bytes($ivsize);\n  $encrypted = openssl_encrypt($api_key, $alg, $api_secret, OPENSSL_RAW_DATA, $iv);\n  $encrypted = base64_encode($encrypted);\n  return $encrypted;\n}\n```\n"
@@ -180,7 +180,7 @@
 			"type": "object",
 			"properties": {
 			  "from": {
-				"description": "«From» currency code. All currency codes you find here.",
+				"description": "«From» currency code. All currency codes you can get through [/exchange/currencies/](#operation/exchange-currencies) method",
 				"type": "string",
 				"minLength": 3,
 				"example": "BTC"
@@ -192,7 +192,7 @@
 				"example": "Bitcoin"
 			  },
 			  "to": {
-				"description": "«To» currency code. All currency codes you can get through [/exchange/currencies/](#/Exchange/exchange-currencies/) method.",
+				"description": "«To» currency code. All currency codes you can get through [/exchange/currencies/](#operation/exchange-currencies) method.",
 				"type": "string",
 				"minLength": 3,
 				"example": "ETH"
@@ -321,7 +321,7 @@
 				"in": "path",
 				"required": true,
 				"example": "BTC-ETH",
-				"description": "Exchange direction with currency codes, separated by a dash. <a href=\"#\">List of currencies codes</a>",
+				"description": "Exchange direction with currency codes, separated by a dash. Get a list of active currency codes through [/exchange/currencies/](#operation/exchange-currencies) method.",
 				"schema": {
 				  "type": "string",
 				  "pattern": "^[A-Z]{3,8}-[A-Z]{3,8}$",

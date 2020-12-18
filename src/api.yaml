@@ -8,7 +8,7 @@ info:
 	email: api@avanchange.com
 	url: https://avanchange.com/en/support/
   x-logo:
-	url: https://avanchange.com/uploads/images/logo-api.png
+	url: https://avanchange.com/uploads/images/logo-api-v1.png
 	altText: AvanChange API
   description: >
 
@@ -221,7 +221,7 @@ components:
 	  type: object
 	  properties:
 		from:
-		  description: «From» currency code. All currency codes you find here.
+		  description: «From» currency code. All currency codes you can get through [/exchange/currencies/](#operation/exchange-currencies) method
 		  type: string
 		  minLength: 3
 		  example: "BTC"
@@ -231,7 +231,7 @@ components:
 		  minLength: 3
 		  example: "Bitcoin"
 		to:
-		  description: «To» currency code. All currency codes you can get through [/exchange/currencies/](#/Exchange/exchange-currencies/) method.
+		  description: «To» currency code. All currency codes you can get through [/exchange/currencies/](#operation/exchange-currencies) method.
 		  type: string
 		  minLength: 3
 		  example: "ETH"
@@ -328,8 +328,7 @@ paths:
 		  required: true
 		  example: BTC-ETH
 		  description: >-
-			Exchange direction with currency codes, separated by a dash. <a
-			href="#">List of currencies codes</a>
+			Exchange direction with currency codes, separated by a dash. Get a list of active currency codes through [/exchange/currencies/](#operation/exchange-currencies) method.
 		  schema:
 			type: string
 			pattern: '^[A-Z]{3,8}-[A-Z]{3,8}$'
