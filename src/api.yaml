@@ -1,4 +1,9 @@
+# OpenAPI Version
 openapi: 3.0.3
+
+###########################
+# Document info
+###########################
 info:
   version: '1.0'
   title: AvanChange API
@@ -6,9 +11,9 @@ info:
   contact:
 	name: API Support
 	email: api@avanchange.com
-	url: https://avanchange.com/en/support/
+	url: 'https://avanchange.com/en/support/'
   x-logo:
-	url: https://avanchange.com/uploads/images/logo-api-v1.png
+	url: 'https://avanchange.com/uploads/images/logo-api.png'
 	altText: AvanChange API
   description: >
 
@@ -64,10 +69,12 @@ info:
 	Base64 encoding.
 
 
-	Below code used to calculate value for API Token. Also, you can <a href="https://github.com/PerfectoWeb/AvanChange-API/tree/main/php/lib" target="_blank">download as file</a>.
-	
+	Below code used to calculate value for API Token. Also, you can <a
+	href="https://github.com/PerfectoWeb/AvanChange-API/tree/main/php/lib"
+	target="_blank">download as file</a>.
+
 	```
-	
+
 	// PHP 5 >= 5.3.0, PHP 7, PHP 8
 
 	function encrypt_apikey($api_key, $api_secret) {
@@ -78,12 +85,15 @@ info:
 	  $encrypted = base64_encode($encrypted);
 	  return $encrypted;
 	}
-	
+
 	```
-	
-	
-  
+
+###########################
+# Components
+###########################
 components:
+
+  # headers
   headers:
 	X-RateLimit-Limit:
 	  description: Request limit per hour
@@ -95,64 +105,73 @@ components:
 	  schema:
 		type: integer
 	  example: 100
+	  
+  # security
   securitySchemes:
 	APITokenAuth:
 	  type: apiKey
 	  in: header
 	  name: X-API-TOKEN
-
+	  
+  # schemas
   schemas:
+  
 	user:
 	  type: object
 	  properties:
-		login: 
+		login:
 		  description: User supplied username
 		  type: string
 		  minLength: 3
 		  example: John78
 		  pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
-		email: 
+		email:
 		  description: User email address
 		  type: string
 		  format: email
 		  minLength: 7
 		  example: john.doe@example.com
-		points: 
+		points:
 		  description: Referral Programm points
 		  type: integer
 		  minLength: 1
 		  example: 3570
-		level: 
+		level:
 		  description: Referral Programm level
 		  type: integer
 		  minLength: 1
 		  example: 3
-		registered: 
+		registered:
 		  description: User registration epoch time
 		  type: integer
 		  minLength: 10
 		  example: 1552124074
-		last_visit: 
+		last_visit:
 		  description: User last visit epoch time
 		  type: integer
 		  minLength: 10
 		  example: 1558205323
-		api_status: 
-		  description: >
+		api_status:
+		  description: |
 			User API status
 			  * `0` - Disabled
 			  * `1` - Enabled
 		  type: integer
 		  example: 1
-		  enum: [0, 1]
-		status: 
-		  description: >
-			User account statu
+		  enum:
+			- 0
+			- 1
+		status:
+		  description: |
+			User account status
 			  * `0` - Inactive
 			  * `1` - Active
 			  * `2` - Blocked
 		  type: integer
-		  enum: [0, 1, 2]
+		  enum:
+			- 0
+			- 1
+			- 2
 		  example: 1
 		  
 	balance:
@@ -161,129 +180,260 @@ components:
 		acbtc:
 		  description: User Balance in BTC
 		  type: number
-		  multipleOf: .000001
+		  multipleOf: 0.000001
 		  minLength: 1
 		  example: 0.285601
 		aceth:
 		  description: User Balance in ETH
 		  type: number
-		  multipleOf: .000001
+		  multipleOf: 0.000001
 		  minLength: 1
 		  example: 0.285601
-		acbtc_max: 
+		acbtc_max:
 		  description: The max allowed deposit on BTC balance
 		  type: number
-		  multipleOf: .000001
+		  multipleOf: 0.000001
 		  minLength: 1
-		  example: 2.000000
-		aceth_max: 
+		  example: 2
+		aceth_max:
 		  description: The max allowed deposit on ETH balance
 		  type: number
-		  multipleOf: .000001
+		  multipleOf: 0.000001
 		  minLength: 1
-		  example: 50.000000
-
+		  example: 50
+		  
 	currencies:
 	  type: object
 	  properties:
 		BTC:
-		  description: "Human friendly name for BTC"
+		  description: Human friendly name for BTC
 		  type: string
 		  minLength: 3
-		  example: "Bitcoin"
+		  example: Bitcoin
 		ETH:
-		  description: "Human friendly name for ETH"
+		  description: Human friendly name for ETH
 		  type: string
 		  minLength: 3
-		  example: "Ethereum"
+		  example: Ethereum
 		XMR:
-		  description: "Human friendly name for XMR"
+		  description: Human friendly name for XMR
 		  type: string
 		  minLength: 3
-		  example: "Monero (XMR)"
+		  example: Monero (XMR)
 		TUSD:
-		  description: "Human friendly name for TUSD"
+		  description: Human friendly name for TUSD
 		  type: string
 		  minLength: 3
-		  example: "TrueUSD (TUSD)"
+		  example: TrueUSD (TUSD)
 		QWRUB:
-		  description: "Human friendly name for QWRUB"
+		  description: Human friendly name for QWRUB
 		  type: string
 		  minLength: 3
-		  example: "Qiwi (RUB)"
+		  example: Qiwi (RUB)
 		...:
-		  description: "Human friendly name for other currencies"
+		  description: Human friendly name for other currencies
 		  type: string
 		  minLength: 3
-		  example: "..."
+		  example: ...
 		  
 	rate:
 	  type: object
 	  properties:
 		from:
-		  description: «From» currency code. All currency codes you can get through [/exchange/currencies/](#operation/exchange-currencies) method
+		  description: >-
+			«From» currency code. All currency codes you can get through
+			[/exchange/currencies/](#operation/exchange-currencies) method
 		  type: string
 		  minLength: 3
-		  example: "BTC"
+		  example: BTC
 		from_name:
 		  description: Human friendly name of «From» direction
 		  type: string
 		  minLength: 3
-		  example: "Bitcoin"
+		  example: Bitcoin
 		to:
-		  description: «To» currency code. All currency codes you can get through [/exchange/currencies/](#operation/exchange-currencies) method.
+		  description: >-
+			«To» currency code. All currency codes you can get through
+			[/exchange/currencies/](#operation/exchange-currencies) method.
 		  type: string
 		  minLength: 3
-		  example: "ETH"
+		  example: ETH
 		to_name:
 		  description: Human friendly name of «To» direction
 		  type: string
 		  minLength: 3
-		  example: "Ethereum"
+		  example: Ethereum
 		rate:
-		  description: Exchange rate without discounts. If you want get rate with all personal discounts please use `X-API-TOKEN` header in your query.
+		  description: >-
+			Exchange rate without discounts. If you want get rate with all
+			personal discounts please use `X-API-TOKEN` header in your query.
 		  type: number
 		  minLength: 3
-		  multipleOf: .000001
+		  multipleOf: 0.000001
 		  example: 1709159.47
 		reserve:
 		  description: Reserves of «To» currency
 		  type: number
 		  minLength: 3
-		  multipleOf: .000001
+		  multipleOf: 0.000001
 		  example: 500000
 		min:
 		  description: Min amount in give currency
 		  type: number
 		  minLength: 3
-		  multipleOf: .000001
+		  multipleOf: 0.000001
 		  example: 5000
 		max:
 		  description: Max amount in give currency
 		  type: number
 		  minLength: 3
-		  multipleOf: .000001
+		  multipleOf: 0.000001
 		  example: 45000
 		  
 	rates:
 	  type: object
 	  properties:
-		1:
+		'1':
 		  $ref: '#/components/schemas/rate'
-		2:
+		'2':
 		  $ref: '#/components/schemas/rate'
-		n:
+		'n':
 		  description: Same other exchange rates
 		  type: object
-		  example: "..."
+		  example: ...
 		  
-		
-	  
+		  
+	order-created:
+	  type: object
+	  properties:
+		hash:
+		  description: Unique payment hash. Save this hash after request to confirm, cancel or check your payment status.
+		  type: string
+		  minLength: 32
+		  example: 'd88b1e8f0e32b9a8bfe1e698b074dab62397b8f9'
+		  pattern: '/(?=.*[a-zA-Z0-9])/'
+		status:
+		  description: |
+			Exchange order status
+			  * `CREATED` - Order created. Awaiting payment to change status to *PAID*.
+			  * `PAID` - Our system receive payment information form processing.
+			  * `PAID_MANUALLY` - When payment sent manually (without processing)
+			  * `COMPLETE` - Order succesfull complete.
+			  * `DENIED` - Exchange for this order is denied by moderator
+			  * `CANCELED` - Order canceled by user
+			  * `EXPIRED` - Order lifetime is expired
+			  * `REMOVED` - Order is removed by moderator
+		  type: string
+		  enum:
+			- 'CREATED'
+			- 'PAID'
+			- 'COMPLETE'
+			- 'DENIED'
+			- 'CANCELED'
+			- 'EXPIRED'
+			- 'REMOVED'
+		  example: 'CREATED'
+		  minLength: 3
+		  pattern: '/(?=.*[a-zA-Z0-9])/'
+		  
+	error-access:
+	  type: object
+	  properties:
+		error:
+		  description: |
+		   When you'r get an array "error = 1" in any request, it means that the server returned an error.
+			  * `0` - Success
+			  * `1` - Error
+		  type: integer
+		  enum:
+			- 0
+			- 1
+		  example: 1
+		code:
+		  description: >-
+			There are three different error types.
+			  - 3XXX - Аuthentication & security errors
+			  - 4XXX - Data errors
+			  - 5XXX - System errors
+		  type: integer
+		  minLength: 4
+		  example: 3001
+		description:
+		  description: >-
+		   Human friendly description of error
+		  type: string
+		  minLength: 3
+		  example: API Token not set
+		advice:
+		  description: >-
+		   Possible solution to your problem
+		  type: string
+		  minLength: 3
+		  example: Submit your encrypted API Key through X-API-TOKEN header 
+		  
+		  
+	error-data:
+	  type: object
+	  properties:
+		error:
+		  description: |
+		   When you'r get an array "error = 1" in any request, it means that the server returned an error.
+			  * `0` - Success
+			  * `1` - Error
+		  type: integer
+		  enum:
+			- 0
+			- 1
+		  example: 1
+		code:
+		  description: >-
+			There are three different error types.
+			  - 3XXX - Аuthentication & security errors
+			  - 4XXX - Data errors
+			  - 5XXX - System errors
+		  type: integer
+		  minLength: 4
+		  example: 4001
+		description:
+		  description: >-
+		   Human friendly description of error
+		  type: string
+		  minLength: 3
+		  example: Encrypted data format is invalid
+		advice:
+		  description: >-
+		   Possible solution to your problem
+		  type: string
+		  minLength: 3
+		  example: Please check specified algorithm used for encryption
+		  
+	error-codes:
+	  type: object
+	  properties:
+		3000:
+		  description: Secret key does not exist
+		  type: string
+		3001:
+		  description: Merchant account does not exist
+		  type: string
+		3002:
+		  description: Encrypted data format is invalid
+		  type: string
+		  
+	   
+###########################
+# Servers
+###########################   
 servers:
   - url: 'https://api.avanchange.com/v1'
   - url: 'https://avanchange.com/api/v1'
+  
+  
 paths:
-  /exchange/currencies/:
+###########################
+# Path: Exchange
+###########################
+  /exchange/currencies:
 	summary: Currencies
 	description: Get all payment methods codes with human friendly names
 	get:
@@ -299,7 +449,8 @@ paths:
 				$ref: '#/components/schemas/currencies'
 	  tags:
 		- Exchange
-  /exchange/rates/:
+		
+  /exchange/rates:
 	summary: Rates
 	description: Actions with exchange rates and etc
 	get:
@@ -315,7 +466,8 @@ paths:
 				$ref: '#/components/schemas/rates'
 	  tags:
 		- Exchange
-  '/exchange/rate/{symbol}/':
+		
+  '/exchange/rate/{symbol}':
 	summary: Rate
 	description: Get rate for selected direction
 	get:
@@ -328,7 +480,9 @@ paths:
 		  required: true
 		  example: BTC-ETH
 		  description: >-
-			Exchange direction with currency codes, separated by a dash. Get a list of active currency codes through [/exchange/currencies/](#operation/exchange-currencies) method.
+			Exchange direction with currency codes, separated by a dash. Get a
+			list of active currency codes through
+			[/exchange/currencies/](#operation/exchange-currencies) method.
 		  schema:
 			type: string
 			pattern: '^[A-Z]{3,8}-[A-Z]{3,8}$'
@@ -342,7 +496,11 @@ paths:
 				$ref: '#/components/schemas/rate'
 	  tags:
 		- Exchange
-  /account/info/:
+		
+###########################
+# Path: Account
+###########################
+  /account/info:
 	summary: Account info
 	description: Get account info
 	get:
@@ -360,7 +518,8 @@ paths:
 				$ref: '#/components/schemas/user'
 	  tags:
 		- Account
-  /account/balance/:
+		
+  /account/balance:
 	summary: Account balance
 	description: Get account balances
 	get:
@@ -378,10 +537,50 @@ paths:
 				$ref: '#/components/schemas/balance'
 	  tags:
 		- Account
+		
+###########################
+# Path: Orders
+###########################
+  /order/create:
+	summary: Create xxx
+	description: Create YYY
+	post:
+	  security:
+		- APITokenAuth: []
+	  summary: Create exchange order
+	  description: Creates an exchange order with reference number and registers payment information (description, timestamp) with the integrator
+	  operationId: order-create
+	  responses:
+		'200':
+		  description: Success
+		  content:
+			application/json:
+			  schema:
+				$ref: '#/components/schemas/order-created'
+		'400':
+		  description: Data error
+		  content:
+			application/json:
+			  schema:
+				$ref: '#/components/schemas/error-data'
+		'401':
+		  description: Access denied
+		  content:
+			application/json:
+			  schema:
+				$ref: '#/components/schemas/error-access'
+	  tags:
+		- Orders
+		
+###########################
+# Tags
+###########################
 tags:
   - name: Account
-	description: Operations with personal account. Get user info, balance and others.
+	description: 'Operations with personal account. Get user info, balance and others.'
   - name: Exchange
-	description: Operations with rates and sugessions. Get currencies, rates or single rate.
+	description: >-
+	  Operations with rates and sugessions. Get currencies, rates or single
+	  rate.
   - name: Orders
-	description: Operations with orders. Create, confirm, cancel and check orders.
+	description: 'Operations with orders. Create, confirm, cancel and check orders.'

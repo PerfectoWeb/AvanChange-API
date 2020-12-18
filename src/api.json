@@ -10,7 +10,7 @@
 		  "url": "https://avanchange.com/en/support/"
 		},
 		"x-logo": {
-		  "url": "https://avanchange.com/uploads/images/logo-api-v1.png",
+		  "url": "https://avanchange.com/uploads/images/logo-api.png",
 		  "altText": "AvanChange API"
 		},
 		"description": "\n## Introduction\nWelcome to [AvanChange](https://avanchange.com) Exchange API and developer documentation. This page contains the documentation on how to use AvanChange through API calls. To get started, create or login into your existing [avanchange.com](https://avanchange.com) account. Go to the **My Account** &raquo; **API** section to get your **API Key** & **Secret.** \n## Endpoints and Responses\nThe Content-Type for `POST`, `PUT` requests can be set to `application/json` to the request to get the JSON response. Most API endpoints provide the same content as their HTML counterparts. Sending requests with the Accept header is necessary.\n## Authentication\nSome endpoints do not require any authentication, pretty much anything else will require you to be authenticated. To become authenticated you will need to create an `X-API-TOKEN` using your API Key and API Secret.\n\nOnce you have your API Token you can pass it as an HTTP header like this:\n```\ncurl -X GET \"https://api.avanchange.com/v1/endpoint/\" \\\n-H \"X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA==\"\n```\nand this is how POST requests will look:\n```\ncurl -X POST \"https://api.avanchange.com/v1/endpoint/\" \\\n-H \"Content-Type: application/json;\" \\\n-H \"X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA==\"\n```\n## Create API Token\nTo create your API Token you must encode your API Key with API Secret using <a href=\"https://en.wikipedia.org/wiki/Padding_(cryptography)\" target=\"_blank\">**AES-128-ECB-PKCS5Padding**</a> and encrypting result in Base64 encoding.\n\nBelow code used to calculate value for API Token. Also, you can <a href=\"https://github.com/PerfectoWeb/AvanChange-API/tree/main/php/lib\" target=\"_blank\">download as file</a>.\n```\n// PHP 5 >= 5.3.0, PHP 7, PHP 8\nfunction encrypt_apikey($api_key, $api_secret) {\n  $alg = 'AES-128-ECB';\n  $ivsize = openssl_cipher_iv_length($alg);\n  $iv = openssl_random_pseudo_bytes($ivsize);\n  $encrypted = openssl_encrypt($api_key, $alg, $api_secret, OPENSSL_RAW_DATA, $iv);\n  $encrypted = base64_encode($encrypted);\n  return $encrypted;\n}\n```\n"
@@ -91,7 +91,7 @@
 				]
 			  },
 			  "status": {
-				"description": "User account statu\n  * `0` - Inactive\n  * `1` - Active\n  * `2` - Blocked\n",
+				"description": "User account status\n  * `0` - Inactive\n  * `1` - Active\n  * `2` - Blocked\n",
 				"type": "integer",
 				"enum": [
 				  0,
@@ -248,6 +248,115 @@
 				"example": "..."
 			  }
 			}
+		  },
+		  "order-created": {
+			"type": "object",
+			"properties": {
+			  "hash": {
+				"description": "Unique payment hash. Save this hash after request to confirm, cancel or check your payment status.",
+				"type": "string",
+				"minLength": 32,
+				"example": "d88b1e8f0e32b9a8bfe1e698b074dab62397b8f9",
+				"pattern": "/(?=.*[a-zA-Z0-9])/"
+			  },
+			  "status": {
+				"description": "Exchange order status\n  * `CREATED` - Order created. Awaiting payment to change status to *PAID*.\n  * `PAID` - Our system receive payment information form processing.\n  * `PAID_MANUALLY` - When payment sent manually (without processing)\n  * `COMPLETE` - Order succesfull complete.\n  * `DENIED` - Exchange for this order is denied by moderator\n  * `CANCELED` - Order canceled by user\n  * `EXPIRED` - Order lifetime is expired\n  * `REMOVED` - Order is removed by moderator\n",
+				"type": "string",
+				"enum": [
+				  "CREATED",
+				  "PAID",
+				  "COMPLETE",
+				  "DENIED",
+				  "CANCELED",
+				  "EXPIRED",
+				  "REMOVED"
+				],
+				"example": "CREATED",
+				"minLength": 3,
+				"pattern": "/(?=.*[a-zA-Z0-9])/"
+			  }
+			}
+		  },
+		  "error-access": {
+			"type": "object",
+			"properties": {
+			  "error": {
+				"description": "When you'r get an array \"error = 1\" in any request, it means that the server returned an error.\n   * `0` - Success\n   * `1` - Error\n",
+				"type": "integer",
+				"enum": [
+				  0,
+				  1
+				],
+				"example": 1
+			  },
+			  "code": {
+				"description": "There are three different error types.\n  - 3XXX - Аuthentication & security errors\n  - 4XXX - Data errors\n  - 5XXX - System errors",
+				"type": "integer",
+				"minLength": 4,
+				"example": 3001
+			  },
+			  "description": {
+				"description": "Human friendly description of error",
+				"type": "string",
+				"minLength": 3,
+				"example": "API Token not set"
+			  },
+			  "advice": {
+				"description": "Possible solution to your problem",
+				"type": "string",
+				"minLength": 3,
+				"example": "Submit your encrypted API Key through X-API-TOKEN header"
+			  }
+			}
+		  },
+		  "error-data": {
+			"type": "object",
+			"properties": {
+			  "error": {
+				"description": "When you'r get an array \"error = 1\" in any request, it means that the server returned an error.\n   * `0` - Success\n   * `1` - Error\n",
+				"type": "integer",
+				"enum": [
+				  0,
+				  1
+				],
+				"example": 1
+			  },
+			  "code": {
+				"description": "There are three different error types.\n  - 3XXX - Аuthentication & security errors\n  - 4XXX - Data errors\n  - 5XXX - System errors",
+				"type": "integer",
+				"minLength": 4,
+				"example": 4001
+			  },
+			  "description": {
+				"description": "Human friendly description of error",
+				"type": "string",
+				"minLength": 3,
+				"example": "Encrypted data format is invalid"
+			  },
+			  "advice": {
+				"description": "Possible solution to your problem",
+				"type": "string",
+				"minLength": 3,
+				"example": "Please check specified algorithm used for encryption"
+			  }
+			}
+		  },
+		  "error-codes": {
+			"type": "object",
+			"properties": {
+			  "3000": {
+				"description": "Secret key does not exist",
+				"type": "string"
+			  },
+			  "3001": {
+				"description": "Merchant account does not exist",
+				"type": "string"
+			  },
+			  "3002": {
+				"description": "Encrypted data format is invalid",
+				"type": "string"
+			  }
+			}
 		  }
 		}
 	  },
@@ -260,7 +369,7 @@
 		}
 	  ],
 	  "paths": {
-		"/exchange/currencies/": {
+		"/exchange/currencies": {
 		  "summary": "Currencies",
 		  "description": "Get all payment methods codes with human friendly names",
 		  "get": {
@@ -284,7 +393,7 @@
 			]
 		  }
 		},
-		"/exchange/rates/": {
+		"/exchange/rates": {
 		  "summary": "Rates",
 		  "description": "Actions with exchange rates and etc",
 		  "get": {
@@ -308,7 +417,7 @@
 			]
 		  }
 		},
-		"/exchange/rate/{symbol}/": {
+		"/exchange/rate/{symbol}": {
 		  "summary": "Rate",
 		  "description": "Get rate for selected direction",
 		  "get": {
@@ -346,7 +455,7 @@
 			]
 		  }
 		},
-		"/account/info/": {
+		"/account/info": {
 		  "summary": "Account info",
 		  "description": "Get account info",
 		  "get": {
@@ -375,7 +484,7 @@
 			]
 		  }
 		},
-		"/account/balance/": {
+		"/account/balance": {
 		  "summary": "Account balance",
 		  "description": "Get account balances",
 		  "get": {
@@ -401,6 +510,55 @@
 			},
 			"tags": [
 			  "Account"
+			]
+		  }
+		},
+		"/order/create": {
+		  "summary": "Create xxx",
+		  "description": "Create YYY",
+		  "post": {
+			"security": [
+			  {
+				"APITokenAuth": []
+			  }
+			],
+			"summary": "Create exchange order",
+			"description": "Creates an exchange order with reference number and registers payment information (description, timestamp) with the integrator",
+			"operationId": "order-create",
+			"responses": {
+			  "200": {
+				"description": "Success",
+				"content": {
+				  "application/json": {
+					"schema": {
+					  "$ref": "#/components/schemas/order-created"
+					}
+				  }
+				}
+			  },
+			  "400": {
+				"description": "Data error",
+				"content": {
+				  "application/json": {
+					"schema": {
+					  "$ref": "#/components/schemas/error-data"
+					}
+				  }
+				}
+			  },
+			  "401": {
+				"description": "Access denied",
+				"content": {
+				  "application/json": {
+					"schema": {
+					  "$ref": "#/components/schemas/error-access"
+					}
+				  }
+				}
+			  }
+			},
+			"tags": [
+			  "Orders"
 			]
 		  }
 		}
