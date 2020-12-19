@@ -20,8 +20,10 @@ info:
 	through API calls. To get started, create or login into your existing
 	[avanchange.com](https://avanchange.com) account. Go to the **My Account**
 	&raquo; **API** section to get your **API Key** & **Secret.** 
+	
+	Last update: 2020-12-23
 
-	# Endpoints and Responses
+	# Endpoints & Responses
 
 	The Content-Type for `POST`, `PUT`, `PATCH` requests can be set to `application/json`
 	to the request to get the JSON response. Most API endpoints provide the same
@@ -83,6 +85,46 @@ info:
 	}
 
 	```
+	
+	# Rate Limits
+	
+	To preserve the integrity and reliability of the platform our APIs have the following rate limits.
+	
+	## All API Endpoints
+	
+	You can run a max of ten requests per second (10 requests/second) unless otherwise noted below.
+	
+	## Account APIs
+	
+	You can run a max of one request per second (1 request/second) on the following:
+	
+	## Orders APIs
+	
+	You can run a max of one request per second (1 request/second) and a max of two thousand request per day (2000 requests/day) on the following:
+	
+	# Errors
+	
+	The AvanChange API uses HTTP Status codes to reflect a successful or error requests. 2XX status codes represent a successful request, 4XX/5XX status codes represent an error took place. If you receive an error HTTP status code, check the body for an error code and message. 
+	
+	Also, we send you internal error codes in the message body, which allow you to quickly identify the type of error. There are three different error types: 
+	  - **3XXX** - Аuthentication & Security errors
+	  - **4XXX** - Data errors
+	  - **5XXX** - System errors
+	
+	| Code | Description | Advice |
+	|-----|-----|-------|
+	| 3000 | API is disabled | AvanChange API is globally disabled |
+	| 3001 | Access Denied | You are trying to access a secure section without authentication |
+	| 3002 | Token is not set | Your X-API-TOKEN is empty |
+	| 3003 | Token is not valid | Your X-API-TOKEN is not valid. More info in [Create API Token](#section/Create-API-Token) |
+	| 3004 | Your API is disabled | AvanChange API disabled for your Access Token |
+	| 3xxx | ... | ... |
+	| 4000 | Request JSON data format is not valid | Field name should not contain left/right spaces. |
+	| 4001 | Give currency is missing | Field «give» is missing |
+	| 4002 | Give currency code is invalid | Field «give» is not supported. [List of currency codes](#operation/exchange-currencies) |
+	| 4003 | Take currency is missing | Field «take» is missing |
+	| 4004 | Take currency code is invalid | Field «take» is not supported. [List of currency codes](#operation/exchange-currencies) |
+	| 4xxx | ... | ... |
 
 ###########################
 # Components
