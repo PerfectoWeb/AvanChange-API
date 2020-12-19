@@ -111,7 +111,7 @@ info:
 	  - **4XXX** - Data errors
 	  - **5XXX** - System errors
 	
-	## 3xxx errors
+	## 3xxx Errors
 	| Code | Description | Advice |
 	|-----|-----|-------|
 	| 3000 | API is disabled | AvanChange API is globally disabled |
@@ -120,7 +120,7 @@ info:
 	| 3003 | Token is not valid | Your X-API-TOKEN is not valid. More info in [Create API Token](#section/Create-API-Token) |
 	| 3004 | Your API is disabled | AvanChange API disabled for your Access Token |
 	
-	## 4xxx errors
+	## 4xxx Errors
 	| Code | Description | Advice |
 	|-----|-----|-------|
 	| 4000 | Request JSON data format is not valid | Field name should not contain left/right spaces. |
@@ -130,7 +130,7 @@ info:
 	| 4004 | Take currency code is invalid | Field «take» is not supported. [List of currency codes](#operation/exchange-currencies) |
 	| 4xxx | ... | ... |
 	
-	## 5xxx errors
+	## 5xxx Errors
 	| Code | Description | Advice |
 	|-----|-----|-------|
 	| 4000 | Request JSON data format is not valid | Field name should not contain left/right spaces. |
