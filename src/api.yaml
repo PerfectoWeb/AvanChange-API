@@ -5,20 +5,16 @@ openapi: 3.0.3
 # Document info
 ###########################
 info:
-  version: '1.0'
+  version: '1.0.0'
   title: AvanChange API
   termsOfService: 'https://avanchange.com/en/pages/terms.html'
   contact:
 	name: API Support
-	email: api@avanchange.com
 	url: 'https://avanchange.com/en/support/'
   x-logo:
 	url: 'https://avanchange.com/uploads/images/logo-api.png'
 	altText: AvanChange API
-  description: >
-
-	# Introduction
-
+  description: |
 	Welcome to [AvanChange](https://avanchange.com) Exchange API and developer
 	documentation. This page contains the documentation on how to use AvanChange
 	through API calls. To get started, create or login into your existing
@@ -112,6 +108,15 @@ components:
 	  type: apiKey
 	  in: header
 	  name: X-API-TOKEN
+	  
+  parameters:
+	api_token_header:
+	  name: X-API-TOKEN
+	  in: header
+	  required: true
+	  schema:
+		type: string
+	  example: "NbtXgMr2bowsXaFQ39XqCA=="
 	  
   # schemas
   schemas:
@@ -389,19 +394,16 @@ components:
 		  type: string
 		  minLength: 3
 		  example: 'John Wick'
-		  pattern: '/(?=.*[a-zA-Z0-9])/'
 		customer_email:
 		  description: E-mail of the payee for status update notifications.
 		  type: string
 		  minLength: 3
 		  example: 'john.wick@example.com'
-		  pattern: '/(?=.*[a-zA-Z0-9])/'
 		customer_contact:
 		  description: Telegram or VK Account of payee.
 		  type: string
 		  minLength: 3
 		  example: 'https://vk.com/john.wick'
-		  pattern: '/(?=.*[a-zA-Z0-9])/'
 		date_create:
 		  description: The date-time of order creation in our system. <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>.
 		  type: string
@@ -645,6 +647,8 @@ paths:
 	  summary: Get account info
 	  description: Retrieve a short data of personal account.
 	  operationId: account-info
+	  parameters:
+		- $ref: '#/components/parameters/api_token_header'
 	  responses:
 		'200':
 		  description: Success
@@ -664,6 +668,8 @@ paths:
 	  summary: Get account balance
 	  description: Retrieve personal account balances
 	  operationId: account-balance
+	  parameters:
+		- $ref: '#/components/parameters/api_token_header'
 	  responses:
 		'200':
 		  description: Success
@@ -679,13 +685,23 @@ paths:
 ###########################
   /order/create:
 	summary: Create order
-	description: Creates an exchange order with reference number and registers payment information (description, timestamp) with the integrator
+	description: Creates exchange order with selected direction and registers payment information.
 	post:
 	  security:
 		- X-API-TOKEN: []
 	  summary: Create exchange order
-	  description: Creates an exchange order with reference number and registers payment information (description, timestamp) with the integrator
+	  description: |
+		Create an exchange order object with the following rules:
+		
+		  * The total length of the customer name cannot exceed 64 characters.
+		  * The customer_contact can contain only VK URL or Telegram username with @ symbol at start.
+		  * The customer name cannot consist of all capital letters..
+		  * You can create **«Bank Card to XXX»** exchange only for approved Bank Cards.
+		  * You can create maximum 100 exchange orders hourly.
+		  * By creating exchange order you accept our <a href="https://avanchange.com/en/pages/terms.html" target="_blank">Terms of Use</a> automatically.
 	  operationId: order-create
+	  parameters:
+		- $ref: '#/components/parameters/api_token_header'
 	  requestBody:
 		required: true
 		content:
@@ -738,19 +754,16 @@ paths:
 					type: string
 					minLength: 3
 					example: 'John Wick'
-					pattern: '/(?=.*[a-zA-Z0-9])/'
 				  customer_email:
 					description: E-mail of the payee for status update notifications.
 					type: string
 					minLength: 3
 					example: 'john.wick@example.com'
-					pattern: '/(?=.*[a-zA-Z0-9])/'
 				  customer_contact:
 					description: Telegram or VK Account of payee.
 					type: string
 					minLength: 3
 					example: 'https://vk.com/john.wick'
-					pattern: '/(?=.*[a-zA-Z0-9])/'
 				required:
 				  - give
 				  - give_amount
@@ -792,6 +805,7 @@ paths:
 	  description: Check the order status and get information about order with unique `hash`
 	  operationId: order-check
 	  parameters:
+		- $ref: '#/components/parameters/api_token_header'
 		- name: hash
 		  in: path
 		  required: true
@@ -834,6 +848,8 @@ paths:
 	  summary: Confirm exchange order
 	  description: If the order was created with the exchange of personal balance, then it must be confirmed.
 	  operationId: order-confirm
+	  parameters:
+		- $ref: '#/components/parameters/api_token_header'
 	  requestBody:
 		required: true
 		content:
@@ -880,12 +896,7 @@ paths:
 	  description: Order cancellation if it has not been paid.
 	  operationId: order-cancel
 	  parameters:
-		- name: X-API-TOKEN
-		  in: header
-		  required: true
-		  schema:
-			type: string
-		  example: "NbtXgMr2bowsXaFQ39XqCA=="
+		- $ref: '#/components/parameters/api_token_header'
 	  requestBody:
 		required: true
 		content:

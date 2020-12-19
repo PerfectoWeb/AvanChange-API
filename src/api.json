@@ -1,19 +1,18 @@
 {
 	  "openapi": "3.0.3",
 	  "info": {
-		"version": "1.0",
+		"version": "1.0.0",
 		"title": "AvanChange API",
 		"termsOfService": "https://avanchange.com/en/pages/terms.html",
 		"contact": {
 		  "name": "API Support",
-		  "email": "api@avanchange.com",
 		  "url": "https://avanchange.com/en/support/"
 		},
 		"x-logo": {
 		  "url": "https://avanchange.com/uploads/images/logo-api.png",
 		  "altText": "AvanChange API"
 		},
-		"description": "\n# Introduction\nWelcome to [AvanChange](https://avanchange.com) Exchange API and developer documentation. This page contains the documentation on how to use AvanChange through API calls. To get started, create or login into your existing [avanchange.com](https://avanchange.com) account. Go to the **My Account** &raquo; **API** section to get your **API Key** & **Secret.** \n# Endpoints and Responses\nThe Content-Type for `POST`, `PUT`, `PATCH` requests can be set to `application/json` to the request to get the JSON response. Most API endpoints provide the same content as their HTML counterparts. Sending requests with the Accept header is necessary.\n# Authentication\nSome endpoints do not require any authentication, pretty much anything else will require you to be authenticated. To become authenticated you will need to create an `X-API-TOKEN` using your API Key and API Secret.\n\nOnce you have your API Token you can pass it as an HTTP header like this:\n```\ncurl -X GET \"https://api.avanchange.com/v1/endpoint/\" \\\n-H \"X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA==\"\n```\nand this is how POST requests will look:\n```\ncurl -X POST \"https://api.avanchange.com/v1/endpoint/\" \\\n-H \"Content-Type: application/json;\" \\\n-H \"X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA==\"\n```\n# Create API Token\nTo create your API Token you must encode your API Key with API Secret using <a href=\"https://en.wikipedia.org/wiki/Padding_(cryptography)\" target=\"_blank\">**AES-128-ECB-PKCS5Padding**</a> and encrypting result in Base64 encoding.\n\nBelow code used to calculate value for API Token. Also, you can <a href=\"https://github.com/PerfectoWeb/AvanChange-API/tree/main/php/lib\" target=\"_blank\">download as file</a>.\n```\n// PHP 5 >= 5.3.0, PHP 7, PHP 8\nfunction encrypt_apikey($api_key, $api_secret) {\n  $alg = 'AES-128-ECB';\n  $ivsize = openssl_cipher_iv_length($alg);\n  $iv = openssl_random_pseudo_bytes($ivsize);\n  $encrypted = openssl_encrypt($api_key, $alg, $api_secret, OPENSSL_RAW_DATA, $iv);\n  $encrypted = base64_encode($encrypted);\n  return $encrypted;\n}\n```\n"
+		"description": "Welcome to [AvanChange](https://avanchange.com) Exchange API and developer\ndocumentation. This page contains the documentation on how to use AvanChange\nthrough API calls. To get started, create or login into your existing\n[avanchange.com](https://avanchange.com) account. Go to the **My Account**\n&raquo; **API** section to get your **API Key** & **Secret.** \n\n# Endpoints and Responses\n\nThe Content-Type for `POST`, `PUT`, `PATCH` requests can be set to `application/json`\nto the request to get the JSON response. Most API endpoints provide the same\ncontent as their HTML counterparts. Sending requests with the Accept header\nis necessary.\n\n# Authentication\n\nSome endpoints do not require any authentication, pretty much anything else\nwill require you to be authenticated. To become authenticated you will need\nto create an `X-API-TOKEN` using your API Key and API Secret.\n\n\nOnce you have your API Token you can pass it as an HTTP header like this:\n\n```\n\ncurl -X GET \"https://api.avanchange.com/v1/endpoint/\" \\\n\n-H \"X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA==\"\n\n```\n\nand this is how POST requests will look:\n\n```\n\ncurl -X POST \"https://api.avanchange.com/v1/endpoint/\" \\\n\n-H \"Content-Type: application/json;\" \\\n\n-H \"X-API-TOKEN: NbtXgMr2bowsXaFQ39XqCA==\"\n\n```\n\n# Create API Token\n\nTo create your API Token you must encode your API Key with API Secret using\n<a href=\"https://en.wikipedia.org/wiki/Padding_(cryptography)\"\ntarget=\"_blank\">**AES-128-ECB-PKCS5Padding**</a> and encrypting result in\nBase64 encoding.\n\n\nBelow code used to calculate value for API Token. Also, you can <a\nhref=\"https://github.com/PerfectoWeb/AvanChange-API/tree/main/php/lib\"\ntarget=\"_blank\">download as file</a>.\n\n```\n\n// PHP 5 >= 5.3.0, PHP 7, PHP 8\n\nfunction encrypt_apikey($api_key, $api_secret) {\n  $alg = 'AES-128-ECB';\n  $ivsize = openssl_cipher_iv_length($alg);\n  $iv = openssl_random_pseudo_bytes($ivsize);\n  $encrypted = openssl_encrypt($api_key, $alg, $api_secret, OPENSSL_RAW_DATA, $iv);\n  $encrypted = base64_encode($encrypted);\n  return $encrypted;\n}\n\n```\n"
 	  },
 	  "components": {
 		"headers": {
@@ -37,6 +36,17 @@
 			"type": "apiKey",
 			"in": "header",
 			"name": "X-API-TOKEN"
+		  }
+		},
+		"parameters": {
+		  "api_token_header": {
+			"name": "X-API-TOKEN",
+			"in": "header",
+			"required": true,
+			"schema": {
+			  "type": "string"
+			},
+			"example": "NbtXgMr2bowsXaFQ39XqCA=="
 		  }
 		},
 		"schemas": {
@@ -343,22 +353,19 @@
 				"description": "The name of the payee.",
 				"type": "string",
 				"minLength": 3,
-				"example": "John Wick",
-				"pattern": "/(?=.*[a-zA-Z0-9])/"
+				"example": "John Wick"
 			  },
 			  "customer_email": {
 				"description": "E-mail of the payee for status update notifications.",
 				"type": "string",
 				"minLength": 3,
-				"example": "john.wick@example.com",
-				"pattern": "/(?=.*[a-zA-Z0-9])/"
+				"example": "john.wick@example.com"
 			  },
 			  "customer_contact": {
 				"description": "Telegram or VK Account of payee.",
 				"type": "string",
 				"minLength": 3,
-				"example": "https://vk.com/john.wick",
-				"pattern": "/(?=.*[a-zA-Z0-9])/"
+				"example": "https://vk.com/john.wick"
 			  },
 			  "date_create": {
 				"description": "The date-time of order creation in our system. <a href=\"https://tools.ietf.org/html/rfc3339#section-5.6\" target=\"_blank\">RFC 3339, section 5.6</a>.",
@@ -608,6 +615,11 @@
 			"summary": "Get account info",
 			"description": "Retrieve a short data of personal account.",
 			"operationId": "account-info",
+			"parameters": [
+			  {
+				"$ref": "#/components/parameters/api_token_header"
+			  }
+			],
 			"responses": {
 			  "200": {
 				"description": "Success",
@@ -637,6 +649,11 @@
 			"summary": "Get account balance",
 			"description": "Retrieve personal account balances",
 			"operationId": "account-balance",
+			"parameters": [
+			  {
+				"$ref": "#/components/parameters/api_token_header"
+			  }
+			],
 			"responses": {
 			  "200": {
 				"description": "Success",
@@ -656,7 +673,7 @@
 		},
 		"/order/create": {
 		  "summary": "Create order",
-		  "description": "Creates an exchange order with reference number and registers payment information (description, timestamp) with the integrator",
+		  "description": "Creates exchange order with selected direction and registers payment information.",
 		  "post": {
 			"security": [
 			  {
@@ -664,8 +681,13 @@
 			  }
 			],
 			"summary": "Create exchange order",
-			"description": "Creates an exchange order with reference number and registers payment information (description, timestamp) with the integrator",
+			"description": "Create an exchange order object with the following rules:\n\n  * The total length of the customer name cannot exceed 64 characters.\n  * The customer_contact can contain only VK URL or Telegram username with @ symbol at start.\n  * The customer name cannot consist of all capital letters..\n  * You can create **«Bank Card to XXX»** exchange only for approved Bank Cards.\n  * You can create maximum 100 exchange orders hourly.\n  * By creating exchange order you accept our <a href=\"https://avanchange.com/en/pages/terms.html\" target=\"_blank\">Terms of Use</a> automatically.\n",
 			"operationId": "order-create",
+			"parameters": [
+			  {
+				"$ref": "#/components/parameters/api_token_header"
+			  }
+			],
 			"requestBody": {
 			  "required": true,
 			  "content": {
@@ -721,22 +743,19 @@
 						"description": "The name of the payee.",
 						"type": "string",
 						"minLength": 3,
-						"example": "John Wick",
-						"pattern": "/(?=.*[a-zA-Z0-9])/"
+						"example": "John Wick"
 					  },
 					  "customer_email": {
 						"description": "E-mail of the payee for status update notifications.",
 						"type": "string",
 						"minLength": 3,
-						"example": "john.wick@example.com",
-						"pattern": "/(?=.*[a-zA-Z0-9])/"
+						"example": "john.wick@example.com"
 					  },
 					  "customer_contact": {
 						"description": "Telegram or VK Account of payee.",
 						"type": "string",
 						"minLength": 3,
-						"example": "https://vk.com/john.wick",
-						"pattern": "/(?=.*[a-zA-Z0-9])/"
+						"example": "https://vk.com/john.wick"
 					  }
 					},
 					"required": [
@@ -802,6 +821,9 @@
 			"operationId": "order-check",
 			"parameters": [
 			  {
+				"$ref": "#/components/parameters/api_token_header"
+			  },
+			  {
 				"name": "hash",
 				"in": "path",
 				"required": true,
@@ -864,6 +886,11 @@
 			"summary": "Confirm exchange order",
 			"description": "If the order was created with the exchange of personal balance, then it must be confirmed.",
 			"operationId": "order-confirm",
+			"parameters": [
+			  {
+				"$ref": "#/components/parameters/api_token_header"
+			  }
+			],
 			"requestBody": {
 			  "required": true,
 			  "content": {
@@ -934,13 +961,7 @@
 			"operationId": "order-cancel",
 			"parameters": [
 			  {
-				"name": "X-API-TOKEN",
-				"in": "header",
-				"required": true,
-				"schema": {
-				  "type": "string"
-				},
-				"example": "NbtXgMr2bowsXaFQ39XqCA=="
+				"$ref": "#/components/parameters/api_token_header"
 			  }
 			],
 			"requestBody": {
