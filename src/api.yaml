@@ -108,7 +108,7 @@ components:
 	  
   # security
   securitySchemes:
-	APITokenAuth:
+	X-API-TOKEN:
 	  type: apiKey
 	  in: header
 	  name: X-API-TOKEN
@@ -180,24 +180,28 @@ components:
 		acbtc:
 		  description: User Balance in BTC
 		  type: number
+		  format: float
 		  multipleOf: 0.000001
 		  minLength: 1
 		  example: 0.285601
 		aceth:
 		  description: User Balance in ETH
 		  type: number
+		  format: float
 		  multipleOf: 0.000001
 		  minLength: 1
 		  example: 0.285601
 		acbtc_max:
 		  description: The max allowed deposit on BTC balance
 		  type: number
+		  format: float
 		  multipleOf: 0.000001
 		  minLength: 1
 		  example: 2
 		aceth_max:
 		  description: The max allowed deposit on ETH balance
 		  type: number
+		  format: float
 		  multipleOf: 0.000001
 		  minLength: 1
 		  example: 50
@@ -268,24 +272,28 @@ components:
 			Exchange rate without discounts. If you want get rate with all
 			personal discounts please use `X-API-TOKEN` header in your query.
 		  type: number
+		  format: float
 		  minLength: 3
 		  multipleOf: 0.000001
 		  example: 1709159.47
 		reserve:
 		  description: Exchange currency reserve
 		  type: number
+		  format: float
 		  minLength: 3
 		  multipleOf: 0.000001
 		  example: 500000
 		min:
 		  description: Min amount in give currency
 		  type: number
+		  format: float
 		  minLength: 3
 		  multipleOf: 0.000001
 		  example: 5000
 		max:
 		  description: Max amount in give currency
 		  type: number
+		  format: float
 		  minLength: 3
 		  multipleOf: 0.000001
 		  example: 45000
@@ -333,12 +341,14 @@ components:
 		give_amount:
 		  description: The amount you must pay.
 		  type: number
+		  format: float
 		  minLength: 1
 		  multipleOf: 0.000001
 		  example: 0.050000
 		give_balance:
 		  description: Payment from balance. Zero when payment is not from balance.
 		  type: number
+		  format: float
 		  minLength: 1
 		  multipleOf: 0.000001
 		  example: 0
@@ -363,12 +373,14 @@ components:
 		take_amount:
 		  description: The amount you will receive.
 		  type: number
+		  format: float
 		  minLength: 1
 		  multipleOf: 0.000001
 		  example: 13601.530000
 		take_balance:
 		  description: Balance top-up. Zero when payment is not the balance top-up.
 		  type: number
+		  format: float
 		  minLength: 1
 		  multipleOf: 0.000001
 		  example: 0
@@ -629,7 +641,7 @@ paths:
 	description: Get account info
 	get:
 	  security:
-		- APITokenAuth: []
+		- X-API-TOKEN: []
 	  summary: Get account info
 	  description: Retrieve a short data of personal account.
 	  operationId: account-info
@@ -648,7 +660,7 @@ paths:
 	description: Get account balances
 	get:
 	  security:
-		- APITokenAuth: []
+		- X-API-TOKEN: []
 	  summary: Get account balance
 	  description: Retrieve personal account balances
 	  operationId: account-balance
@@ -670,7 +682,7 @@ paths:
 	description: Creates an exchange order with reference number and registers payment information (description, timestamp) with the integrator
 	post:
 	  security:
-		- APITokenAuth: []
+		- X-API-TOKEN: []
 	  summary: Create exchange order
 	  description: Creates an exchange order with reference number and registers payment information (description, timestamp) with the integrator
 	  operationId: order-create
@@ -691,6 +703,7 @@ paths:
 				  give_amount:
 					description: The amount you must pay. Specify take_amount or give_amount.
 					type: number
+					format: float
 					minLength: 1
 					multipleOf: 0.000001
 					example: 0.1
@@ -710,6 +723,7 @@ paths:
 				  take_amount:
 					description: The amount you will receive. When you are specify. If you specify both amounts, the recipient's amount will be ignored and recalculated in our system.
 					type: number
+					format: float
 					minLength: 1
 					multipleOf: 0.000001
 					example: null
@@ -773,7 +787,7 @@ paths:
 	description: Cancel the created and not paid order.
 	get:
 	  security:
-		- APITokenAuth: []
+		- X-API-TOKEN: []
 	  summary: Check order
 	  description: Check the order status and get information about order with unique `hash`
 	  operationId: order-check
@@ -816,7 +830,7 @@ paths:
 	description: If the order was created with the exchange of personal balance, then it must be confirmed.
 	patch:
 	  security:
-		- APITokenAuth: []
+		- X-API-TOKEN: []
 	  summary: Confirm exchange order
 	  description: If the order was created with the exchange of personal balance, then it must be confirmed.
 	  operationId: order-confirm
@@ -861,7 +875,7 @@ paths:
 	description: Order cancellation if it has not been paid.
 	patch:
 	  security:
-		- APITokenAuth: []
+		- X-API-TOKEN: []
 	  summary: Cancel exchange order
 	  description: Order cancellation if it has not been paid.
 	  operationId: order-cancel

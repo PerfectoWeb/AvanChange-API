@@ -33,7 +33,7 @@
 		  }
 		},
 		"securitySchemes": {
-		  "APITokenAuth": {
+		  "X-API-TOKEN": {
 			"type": "apiKey",
 			"in": "header",
 			"name": "X-API-TOKEN"
@@ -108,6 +108,7 @@
 			  "acbtc": {
 				"description": "User Balance in BTC",
 				"type": "number",
+				"format": "float",
 				"multipleOf": 0.000001,
 				"minLength": 1,
 				"example": 0.285601
@@ -115,6 +116,7 @@
 			  "aceth": {
 				"description": "User Balance in ETH",
 				"type": "number",
+				"format": "float",
 				"multipleOf": 0.000001,
 				"minLength": 1,
 				"example": 0.285601
@@ -122,6 +124,7 @@
 			  "acbtc_max": {
 				"description": "The max allowed deposit on BTC balance",
 				"type": "number",
+				"format": "float",
 				"multipleOf": 0.000001,
 				"minLength": 1,
 				"example": 2
@@ -129,6 +132,7 @@
 			  "aceth_max": {
 				"description": "The max allowed deposit on ETH balance",
 				"type": "number",
+				"format": "float",
 				"multipleOf": 0.000001,
 				"minLength": 1,
 				"example": 50
@@ -206,6 +210,7 @@
 			  "rate": {
 				"description": "Exchange rate without discounts. If you want get rate with all personal discounts please use `X-API-TOKEN` header in your query.",
 				"type": "number",
+				"format": "float",
 				"minLength": 3,
 				"multipleOf": 0.000001,
 				"example": 1709159.47
@@ -213,6 +218,7 @@
 			  "reserve": {
 				"description": "Exchange currency reserve",
 				"type": "number",
+				"format": "float",
 				"minLength": 3,
 				"multipleOf": 0.000001,
 				"example": 500000
@@ -220,6 +226,7 @@
 			  "min": {
 				"description": "Min amount in give currency",
 				"type": "number",
+				"format": "float",
 				"minLength": 3,
 				"multipleOf": 0.000001,
 				"example": 5000
@@ -227,6 +234,7 @@
 			  "max": {
 				"description": "Max amount in give currency",
 				"type": "number",
+				"format": "float",
 				"minLength": 3,
 				"multipleOf": 0.000001,
 				"example": 45000
@@ -282,6 +290,7 @@
 			  "give_amount": {
 				"description": "The amount you must pay.",
 				"type": "number",
+				"format": "float",
 				"minLength": 1,
 				"multipleOf": 0.000001,
 				"example": 0.05
@@ -289,6 +298,7 @@
 			  "give_balance": {
 				"description": "Payment from balance. Zero when payment is not from balance.",
 				"type": "number",
+				"format": "float",
 				"minLength": 1,
 				"multipleOf": 0.000001,
 				"example": 0
@@ -316,6 +326,7 @@
 			  "take_amount": {
 				"description": "The amount you will receive.",
 				"type": "number",
+				"format": "float",
 				"minLength": 1,
 				"multipleOf": 0.000001,
 				"example": 13601.53
@@ -323,6 +334,7 @@
 			  "take_balance": {
 				"description": "Balance top-up. Zero when payment is not the balance top-up.",
 				"type": "number",
+				"format": "float",
 				"minLength": 1,
 				"multipleOf": 0.000001,
 				"example": 0
@@ -590,7 +602,7 @@
 		  "get": {
 			"security": [
 			  {
-				"APITokenAuth": []
+				"X-API-TOKEN": []
 			  }
 			],
 			"summary": "Get account info",
@@ -619,7 +631,7 @@
 		  "get": {
 			"security": [
 			  {
-				"APITokenAuth": []
+				"X-API-TOKEN": []
 			  }
 			],
 			"summary": "Get account balance",
@@ -648,7 +660,7 @@
 		  "post": {
 			"security": [
 			  {
-				"APITokenAuth": []
+				"X-API-TOKEN": []
 			  }
 			],
 			"summary": "Create exchange order",
@@ -671,6 +683,7 @@
 					  "give_amount": {
 						"description": "The amount you must pay. Specify take_amount or give_amount.",
 						"type": "number",
+						"format": "float",
 						"minLength": 1,
 						"multipleOf": 0.000001,
 						"example": 0.1
@@ -692,6 +705,7 @@
 					  "take_amount": {
 						"description": "The amount you will receive. When you are specify. If you specify both amounts, the recipient's amount will be ignored and recalculated in our system.",
 						"type": "number",
+						"format": "float",
 						"minLength": 1,
 						"multipleOf": 0.000001,
 						"example": null
@@ -780,7 +794,7 @@
 		  "get": {
 			"security": [
 			  {
-				"APITokenAuth": []
+				"X-API-TOKEN": []
 			  }
 			],
 			"summary": "Check order",
@@ -844,7 +858,7 @@
 		  "patch": {
 			"security": [
 			  {
-				"APITokenAuth": []
+				"X-API-TOKEN": []
 			  }
 			],
 			"summary": "Confirm exchange order",
@@ -912,7 +926,7 @@
 		  "patch": {
 			"security": [
 			  {
-				"APITokenAuth": []
+				"X-API-TOKEN": []
 			  }
 			],
 			"summary": "Cancel exchange order",
