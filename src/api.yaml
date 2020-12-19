@@ -17,7 +17,7 @@ info:
 	altText: AvanChange API
   description: >
 
-	## Introduction
+	# Introduction
 
 	Welcome to [AvanChange](https://avanchange.com) Exchange API and developer
 	documentation. This page contains the documentation on how to use AvanChange
@@ -25,14 +25,14 @@ info:
 	[avanchange.com](https://avanchange.com) account. Go to the **My Account**
 	&raquo; **API** section to get your **API Key** & **Secret.** 
 
-	## Endpoints and Responses
+	# Endpoints and Responses
 
-	The Content-Type for `POST`, `PUT` requests can be set to `application/json`
+	The Content-Type for `POST`, `PUT`, `PATCH` requests can be set to `application/json`
 	to the request to get the JSON response. Most API endpoints provide the same
 	content as their HTML counterparts. Sending requests with the Accept header
 	is necessary.
 
-	## Authentication
+	# Authentication
 
 	Some endpoints do not require any authentication, pretty much anything else
 	will require you to be authenticated. To become authenticated you will need
@@ -61,7 +61,7 @@ info:
 
 	```
 
-	## Create API Token
+	# Create API Token
 
 	To create your API Token you must encode your API Key with API Secret using
 	<a href="https://en.wikipedia.org/wiki/Padding_(cryptography)"
@@ -879,6 +879,13 @@ paths:
 	  summary: Cancel exchange order
 	  description: Order cancellation if it has not been paid.
 	  operationId: order-cancel
+	  parameters:
+		- name: X-API-TOKEN
+		  in: header
+		  required: true
+		  schema:
+			type: string
+		  example: "NbtXgMr2bowsXaFQ39XqCA=="
 	  requestBody:
 		required: true
 		content:
