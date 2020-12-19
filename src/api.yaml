@@ -123,7 +123,7 @@ components:
 		  description: User supplied username
 		  type: string
 		  minLength: 3
-		  example: John78
+		  example: John47
 		  pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
 		email:
 		  description: User email address
@@ -239,27 +239,27 @@ components:
 	rate:
 	  type: object
 	  properties:
-		from:
+		give:
 		  description: >-
-			«From» currency code. All currency codes you can get through
+			Code of the currency with which you pay. All currency codes you can get through
 			[/exchange/currencies/](#operation/exchange-currencies) method
 		  type: string
 		  minLength: 3
 		  example: BTC
-		from_name:
-		  description: Human friendly name of «From» direction
+		give_name:
+		  description: Human friendly name of the direction from which you are exchanging.
 		  type: string
 		  minLength: 3
 		  example: Bitcoin
-		to:
+		take:
 		  description: >-
-			«To» currency code. All currency codes you can get through
+			Code of the currency you want to exchange for. All currency codes you can get through
 			[/exchange/currencies/](#operation/exchange-currencies) method.
 		  type: string
 		  minLength: 3
 		  example: ETH
-		to_name:
-		  description: Human friendly name of «To» direction
+		take_name:
+		  description: Human friendly name of the destination you are exchanging for.
 		  type: string
 		  minLength: 3
 		  example: Ethereum
@@ -272,7 +272,7 @@ components:
 		  multipleOf: 0.000001
 		  example: 1709159.47
 		reserve:
-		  description: Reserves of «To» currency
+		  description: Exchange currency reserve
 		  type: number
 		  minLength: 3
 		  multipleOf: 0.000001
@@ -307,6 +307,129 @@ components:
 	  type: object
 	  properties:
 		hash:
+		  description: Unique payment hash. Be sure to save the hash! With hash you can confirm, cancel or check your payment status.
+		  type: string
+		  minLength: 32
+		  example: 'd88b1e8f0e32b9a8bfe1e698b074dab62397b8f9'
+		  pattern: '/(?=.*[a-zA-Z0-9])/'
+		give:
+		  description: The currency in which you pay. All currency codes you can get through
+			[/exchange/currencies/](#operation/exchange-currencies) method
+		  type: string
+		  minLength: 3
+		  example: 'BTC'
+		  pattern: '/(?=.*[a-zA-Z0-9])/'
+		give_name:
+		  description: Human friendly name of giving currency.
+		  type: string
+		  minLength: 3
+		  example: 'Bitcoin (BTC)'
+		give_purse:
+		  description: The purse from which you will pay.
+		  type: string
+		  minLength: 3
+		  example: '14xj5N13HXr8XZ6QSP6zoscs5ra1Eb3r8c'
+		  pattern: '/(?=.*[a-zA-Z0-9])/'
+		give_amount:
+		  description: The amount you must pay.
+		  type: number
+		  minLength: 1
+		  multipleOf: 0.000001
+		  example: 0.050000
+		give_balance:
+		  description: Payment from balance. Zero when payment is not from balance.
+		  type: number
+		  minLength: 1
+		  multipleOf: 0.000001
+		  example: 0
+		take:
+		  description: The currency of the recipient. All currency codes you can get through
+			[/exchange/currencies/](#operation/exchange-currencies) method
+		  type: string
+		  minLength: 3
+		  example: 'QWRUB'
+		  pattern: '/(?=.*[a-zA-Z0-9])/'
+		take_name:
+		  description: Human friendly name of the currency in which you will receive the payment.
+		  type: string
+		  minLength: 3
+		  example: 'QIWI (RUB)'
+		take_purse:
+		  description: Purse where you want to receive payment by exchange.
+		  type: string
+		  minLength: 3
+		  example: '79001234567'
+		  pattern: '/(?=.*[a-zA-Z0-9])/'
+		take_amount:
+		  description: The amount you will receive.
+		  type: number
+		  minLength: 1
+		  multipleOf: 0.000001
+		  example: 13601.530000
+		take_balance:
+		  description: Balance top-up. Zero when payment is not the balance top-up.
+		  type: number
+		  minLength: 1
+		  multipleOf: 0.000001
+		  example: 0
+		customer_name:
+		  description: The name of the payee.
+		  type: string
+		  minLength: 3
+		  example: 'John Wick'
+		  pattern: '/(?=.*[a-zA-Z0-9])/'
+		customer_email:
+		  description: E-mail of the payee for status update notifications.
+		  type: string
+		  minLength: 3
+		  example: 'john.wick@example.com'
+		  pattern: '/(?=.*[a-zA-Z0-9])/'
+		customer_contact:
+		  description: Telegram or VK Account of payee.
+		  type: string
+		  minLength: 3
+		  example: 'https://vk.com/john.wick'
+		  pattern: '/(?=.*[a-zA-Z0-9])/'
+		date_create:
+		  description: The date-time of order creation in our system. <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>.
+		  type: string
+		  format: date-time
+		  example: '2021-01-11T15:27:45Z'
+		date_life:
+		  description: |
+			Life time of the order in <a href="https://tools.ietf.org/html/rfc3339#section-5.6" target="_blank">RFC 3339, section 5.6</a>. You must pay for the order before this time.
+		  type: string
+		  format: date-time
+		  example: '2021-01-11T15:27:45Z'
+		status:
+		  description: |
+			Exchange order status
+			  * `CREATED` - Order created. Awaiting payment to change status to *PAID*.
+			  * `PAID` - Our system receive payment information form processing.
+			  * `PAID_MANUALLY` - When payment sent manually (without processing)
+			  * `COMPLETE` - Order succesfull complete.
+			  * `DENIED` - Exchange for this order is denied by moderator
+			  * `CANCELED` - Order canceled by user
+			  * `EXPIRED` - Order lifetime is expired
+			  * `REMOVED` - Order is removed by moderator
+		  type: string
+		  enum:
+			- 'CREATED'
+			- 'PAID'
+			- 'COMPLETE'
+			- 'DENIED'
+			- 'CANCELED'
+			- 'EXPIRED'
+			- 'REMOVED'
+		  example: 'CREATED'
+		  minLength: 3
+		  pattern: '/(?=.*[a-zA-Z0-9])/'
+		  
+		  
+	order-canceled:
+	  type: object
+	  properties:
+		hash:
 		  description: Unique payment hash. Save this hash after request to confirm, cancel or check your payment status.
 		  type: string
 		  minLength: 32
@@ -332,9 +455,10 @@ components:
 			- 'CANCELED'
 			- 'EXPIRED'
 			- 'REMOVED'
-		  example: 'CREATED'
+		  example: 'CANCELED'
 		  minLength: 3
 		  pattern: '/(?=.*[a-zA-Z0-9])/'
+		  
 		  
 	error-access:
 	  type: object
@@ -542,14 +666,85 @@ paths:
 # Path: Orders
 ###########################
   /order/create:
-	summary: Create xxx
-	description: Create YYY
+	summary: Create order
+	description: Creates an exchange order with reference number and registers payment information (description, timestamp) with the integrator
 	post:
 	  security:
 		- APITokenAuth: []
 	  summary: Create exchange order
 	  description: Creates an exchange order with reference number and registers payment information (description, timestamp) with the integrator
 	  operationId: order-create
+	  requestBody:
+		required: true
+		content:
+			application/json:
+			  schema:
+				type: object
+				properties:
+				  give:
+					description: Give currency code. All currency codes you can get through
+					  [/exchange/currencies/](#operation/exchange-currencies) method
+					type: string
+					minLength: 3
+					example: 'BTC'
+					pattern: '/(?=.*[a-zA-Z0-9])/'
+				  give_amount:
+					description: The amount you must pay. Specify take_amount or give_amount.
+					type: number
+					minLength: 1
+					multipleOf: 0.000001
+					example: 0.1
+				  give_purse:
+					description: The purse from which you will pay.
+					type: string
+					minLength: 3
+					example: null
+					pattern: '/(?=.*[a-zA-Z0-9])/'
+				  take:
+					description: Take currency code. All currency codes you can get through
+					  [/exchange/currencies/](#operation/exchange-currencies) method
+					type: string
+					minLength: 3
+					example: 'QWRUB'
+					pattern: '/(?=.*[a-zA-Z0-9])/'
+				  take_amount:
+					description: The amount you will receive. When you are specify. If you specify both amounts, the recipient's amount will be ignored and recalculated in our system.
+					type: number
+					minLength: 1
+					multipleOf: 0.000001
+					example: null
+				  take_purse:
+					description: Purse where you want to receive payment by exchange.
+					type: string
+					minLength: 3
+					example: '79001234567'
+					pattern: '/(?=.*[a-zA-Z0-9])/'
+				  customer_name:
+					description: The name of the payee.
+					type: string
+					minLength: 3
+					example: 'John Wick'
+					pattern: '/(?=.*[a-zA-Z0-9])/'
+				  customer_email:
+					description: E-mail of the payee for status update notifications.
+					type: string
+					minLength: 3
+					example: 'john.wick@example.com'
+					pattern: '/(?=.*[a-zA-Z0-9])/'
+				  customer_contact:
+					description: Telegram or VK Account of payee.
+					type: string
+					minLength: 3
+					example: 'https://vk.com/john.wick'
+					pattern: '/(?=.*[a-zA-Z0-9])/'
+				required:
+				  - give
+				  - give_amount
+				  - take
+				  - take_purse
+				  - customer_email
+				  - customer_contact
+				
 	  responses:
 		'200':
 		  description: Success
@@ -557,6 +752,139 @@ paths:
 			application/json:
 			  schema:
 				$ref: '#/components/schemas/order-created'
+		'400':
+		  description: Data error
+		  content:
+			application/json:
+			  schema:
+				$ref: '#/components/schemas/error-data'
+		'401':
+		  description: Access denied
+		  content:
+			application/json:
+			  schema:
+				$ref: '#/components/schemas/error-access'
+	  tags:
+		- Orders
+		
+		
+  /order/check/{hash}:
+	summary: Check order
+	description: Cancel the created and not paid order.
+	get:
+	  security:
+		- APITokenAuth: []
+	  summary: Check order
+	  description: Check the order status and get information about order with unique `hash`
+	  operationId: order-check
+	  parameters:
+		- name: hash
+		  in: path
+		  required: true
+		  example: 'd88b1e8f0e32b9a8bfe1e698b074dab62397b8f9'
+		  description: Unique order hash
+		  schema:
+			type: string
+			minLength: 32
+			example: 'd88b1e8f0e32b9a8bfe1e698b074dab62397b8f9'
+			pattern: '/(?=.*[a-zA-Z0-9])/'
+	  responses:
+		'200':
+		  description: Success
+		  content:
+			application/json:
+			  schema:
+				$ref: '#/components/schemas/order-created'
+		'400':
+		  description: Data error
+		  content:
+			application/json:
+			  schema:
+				$ref: '#/components/schemas/error-data'
+		'401':
+		  description: Access denied
+		  content:
+			application/json:
+			  schema:
+				$ref: '#/components/schemas/error-access'
+	  tags:
+		- Orders
+		
+		
+  /order/confirm:
+	summary: Confirm order
+	description: If the order was created with the exchange of personal balance, then it must be confirmed.
+	patch:
+	  security:
+		- APITokenAuth: []
+	  summary: Confirm exchange order
+	  description: If the order was created with the exchange of personal balance, then it must be confirmed.
+	  operationId: order-confirm
+	  requestBody:
+		required: true
+		content:
+			application/json:
+			  schema:
+				type: object
+				properties:
+				  hash:
+					description: The payment unique hash, which you received when creating the application.
+					type: string
+					minLength: 32
+					example: 'd88b1e8f0e32b9a8bfe1e698b074dab62397b8f9'
+					pattern: '/(?=.*[a-zA-Z0-9])/'
+	  responses:
+		'200':
+		  description: Success
+		  content:
+			application/json:
+			  schema:
+				$ref: '#/components/schemas/order-canceled'
+		'400':
+		  description: Data error
+		  content:
+			application/json:
+			  schema:
+				$ref: '#/components/schemas/error-data'
+		'401':
+		  description: Access denied
+		  content:
+			application/json:
+			  schema:
+				$ref: '#/components/schemas/error-access'
+	  tags:
+		- Orders
+		
+		
+  /order/cancel:
+	summary: Cancel order
+	description: Order cancellation if it has not been paid.
+	patch:
+	  security:
+		- APITokenAuth: []
+	  summary: Cancel exchange order
+	  description: Order cancellation if it has not been paid.
+	  operationId: order-cancel
+	  requestBody:
+		required: true
+		content:
+			application/json:
+			  schema:
+				type: object
+				properties:
+				  hash:
+					description: The payment unique hash, which you received when creating the application.
+					type: string
+					minLength: 32
+					example: 'd88b1e8f0e32b9a8bfe1e698b074dab62397b8f9'
+					pattern: '/(?=.*[a-zA-Z0-9])/'
+	  responses:
+		'200':
+		  description: Success
+		  content:
+			application/json:
+			  schema:
+				$ref: '#/components/schemas/order-canceled'
 		'400':
 		  description: Data error
 		  content:
