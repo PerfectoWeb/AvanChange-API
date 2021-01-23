@@ -1,16 +1,23 @@
+# AvanChange SDK
+
 <a href="https://avanchange.com" target="_blank"><img src="https://raw.githubusercontent.com/PerfectoWeb/AvanChange-API/main/logo.png" alt="AvanChange API" width="300"></a>
 
-AvanChange API is a convenient and fast API for performing exchange operations from your 
-website or application via the service <a href="https://avanchange.com/">avanchange.com</a>.
+Welcome to the AvanChange SDK. This repository contain SDK for our <a href="https://avanchange.com/" target="_blank">AvanChange</a> API
 
 ---
 
-**Documentation**: <a href="https://avanchange.redoc.ly" target="_blank">https://avanchange.redoc.ly</a>
+**Documentation**: <a href="https://api.avanchange.com/" target="_blank">https://api.avanchange.com</a>
 
-**Source Code**: <a href="https://github.com/PerfectoWeb/AvanChange-API/" target="_blank">https://github.com/PerfectoWeb/AvanChange-API/</a>
+**SDK**: <a href="https://github.com/PerfectoWeb/AvanChange-API/" target="_blank">https://github.com/PerfectoWeb/AvanChange-API/</a>
 
 ---
 
+## Language coverage
+
+In this repository you can find libraries that will help you use our API with minimal development effort from languages like:
+* PHP
+
+Feel free to make Pull Request with proposed changes or create an Issue on which we respond as soon as possible.
 
 ## License
 
