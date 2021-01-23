@@ -11,7 +11,7 @@
  * @version: 1.0.2
  */
 
-include "avanchange.php";
+include "avanchange.inc.php";
 
 # Init tests class
 # You can get your credentials from your account
