@@ -1,5 +1,3 @@
-# AvanChange SDK
-
 <a href="https://avanchange.com" target="_blank"><img src="https://raw.githubusercontent.com/PerfectoWeb/AvanChange-API/main/logo.png" alt="AvanChange API" width="300"></a>
 
 Welcome to the AvanChange SDK. This repository contain SDK for our <a href="https://avanchange.com/" target="_blank">AvanChange</a> API
